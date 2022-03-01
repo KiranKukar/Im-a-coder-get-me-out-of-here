@@ -15,6 +15,7 @@ background_surface = pygame.image.load("hacker.jpeg").convert()
 background_surface = pygame.transform.scale(background_surface, (WIDTH, HEIGHT))
 
 
+#define the main function for the game
 def main():
 
   run = True
