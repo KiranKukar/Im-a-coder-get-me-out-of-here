@@ -19,6 +19,9 @@ Exit VS Code
 Open anaconda navigator
 lauch VS Code from anaconda navigator
 CLI: conda update anaconda
+     conda env export --from-history -f environment.yml
+     
+      
 
 
 
