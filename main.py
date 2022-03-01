@@ -4,7 +4,16 @@ pygame.init()
 
 WIDTH, HEIGHT = 900, 500   #in caps as they are constants
 
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+from pygame.locals import (
+  RLEACCEL, # does something to allow uploaded images to render on the screen
+)
+
+WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
+
+
+background_surface = pygame.image.load("hacker.jpeg").convert()
+background_surface = pygame.transform.scale(background_surface, (WIDTH, HEIGHT))
+
 
 def main():
 
@@ -17,7 +26,10 @@ def main():
       if event.type == pygame.QUIT:
         run = False
 
+    WINDOW.blit(background_surface, (0,0))
+
     #pygame.quit()
+    pygame.display.flip()
 
 if __name__ == "__main__":
   main() 
