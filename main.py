@@ -6,6 +6,7 @@ WIDTH, HEIGHT = 900, 500   #in caps as they are constants
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
+#define the main function for the game
 def main():
 
   run = True

@@ -1,12 +1,12 @@
-import code
+import web
 urls = (
-'/input', 'index'
+'/', 'index'
 )
 class index:
     def GET(self):
-        i = code.input(name=None)
+        i = web.input(name=None)
         return render.index(i.name)
 if __name__ == "__main__":
-    app = code.application(urls, globals())
+    app = web.application(urls, globals())
     app.run()
-render = code.template.render('templates/')
+render = web.template.render('templates/')
