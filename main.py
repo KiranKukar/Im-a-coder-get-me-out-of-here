@@ -3,7 +3,7 @@ pygame.init()
 
 win = pygame.display.set_mode((500, 500))
 
-pygame.display.set_caption("First Game")
+pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
 x=50
 y=425
