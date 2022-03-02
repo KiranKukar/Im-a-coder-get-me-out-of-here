@@ -1,13 +1,13 @@
 import pygame
 pygame.init()
 
-win = pygame.display.set_mode((600, 600))
+win = pygame.display.set_mode((1240, 600))
 
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
 walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
 walkLeft = [pygame.image.load('./img/run_0_left.png'), pygame.image.load('./img/run_1_left.png'), pygame.image.load('./img/run_2_left.png'), pygame.image.load('./img/run_3_left.png'), pygame.image.load('./img/run_4_left.png'), pygame.image.load('./img/run_5_left.png')]
-bg = pygame.image.load('hacker.jpeg')
+bg = pygame.image.load('./img/spy_wallpaper.jpeg')
 char = pygame.image.load('./img/idle_0.png')
 
 clock = pygame.time.Clock()
@@ -17,8 +17,8 @@ x=300
 y=300
 
 #dimensions of sprite
-width=40
-height=29
+width=120
+height=87
 vel=5
 
 left = False
@@ -73,8 +73,9 @@ while run:
     #vel changes speed of movement
     left = True
     right = False
-  elif keys[pygame.K_RIGHT] and x < 500 - width - vel:
+  elif keys[pygame.K_RIGHT] and x < 1240 - width - vel:
     #character not allowed to move off right of screen
+    #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
     #width is the width of the character
     #the position of the character will not be allowed to move past the border now set the width of the character from the edge
     x += vel
@@ -87,7 +88,8 @@ while run:
 
   if keys[pygame.K_UP] and y > vel:
     y -= vel
-  if keys[pygame.K_DOWN] and y < 500 - height - vel:
+  if keys[pygame.K_DOWN] and y < 600 - height - vel:
+    #600 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
     y += vel
   
   win.fill((0, 0, 0))
