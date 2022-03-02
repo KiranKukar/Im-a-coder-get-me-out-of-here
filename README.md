@@ -22,6 +22,8 @@ CLI: conda update anaconda
      conda activate myenv   (not sure if this is relevant)
      conda env export --from-history -f environment.yml
 
+test
+
 
 
 
