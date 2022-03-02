@@ -6,3 +6,23 @@
 - make sure you have pygame installed (pip install pygame)
 - cd inside the game directory
 - run 'python3 game.py'
+
+
+
+
+Setting up CI
+
+Install anaconda:
+https://www.anaconda.com/products/individual#macos 
+
+Exit VS Code
+Open anaconda navigator
+lauch VS Code from anaconda navigator
+CLI: conda update anaconda
+     conda activate myenv   (not sure if this is relevant)
+     conda env export --from-history -f environment.yml
+
+
+
+
+
