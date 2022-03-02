@@ -13,4 +13,4 @@ def test_calc_substraction():
 def test_calc_multiply():
     # “””Verify the output of `calc_multiply` function”””
     output = mathlib.calc_multiply(2,4)
-    assert output == 8
+    assert output == 7
