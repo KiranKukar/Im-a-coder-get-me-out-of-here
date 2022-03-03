@@ -17,7 +17,7 @@ sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
 sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 
 
-map = TileMap('map.csv', 'map.tmx', sprite_sheet, SCALE)
+map = TileMap('map.csv', sprite_sheet, SCALE)
 player_rect.x, player_rect.y = map.start_x, map.start_y
 
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
