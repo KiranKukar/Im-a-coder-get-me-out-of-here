@@ -21,15 +21,17 @@ class Tile(pygame.sprite.Sprite):
     surface.blit(self.image, (self.rect.x, self.rect.y))
 
 class TileMap():
-  def __init__(self, filename, tmxfile):
+  def __init__(self, filename, tmxFile, sprite_sheet, scale):
     self.tile_size = 16
+    self.scale = scale
+    self.sprite_sheet = sprite_sheet
 
     # starting coordinates of player sprite
     self.start_x, self.start_y = 0, 0 
     # self.image = image
 
     # import tmx file
-    tm = pytmx.load_pygame(tmxfile, pixelalpha=True)
+    tm = pytmx.load_pygame(tmxFile, pixelalpha=True)
     self.tmxdata = tm
 
     # runs load tiles function
@@ -64,29 +66,16 @@ class TileMap():
     for row in map:
       x = 0
       for tile in row:
-        print(x, y)
-
-        if tile == '-1':
-          self.start_x, self.start_y = x * self.tile_size, y * self.tile_size
-        else:
-          print(self.tmxdata.get_tile_gid(x, y, 0))
-          tiles.append(Tile(self.tmxdata.get_tile_image_by_gid(self.tmxdata.get_tile_gid(x, y, 0)), x * self.tile_size, y * self.tile_size))
+        image = self.sprite_sheet.get_image(int(tile), self.tile_size, self.tile_size, self.scale)
+        tiles.append(Tile(image, x * self.tile_size * self.scale, y * self.tile_size * self.scale))
         # Move to next tile in current row
         x +=1
       # Move to next row  
       y += 1
     
     # Store the size of the tile map
-    self.map_w, self.map_h = x * self.tile_size, y * self.tile_size
+    self.map_w, self.map_h = x * self.tile_size * self.scale, y * self.tile_size * self.scale
     return tiles
-      
 
-
-
-
-
-# image = pygame.image.load('./dungeon_sheet.png')
-
-
-
+    # frame_0 = self.sprite_sheet.get_image(tile, self.tile_size, self.tile_size, self.scale)
 

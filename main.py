@@ -1,15 +1,23 @@
 from tkinter import TRUE
 import pygame
 from tiles import *
+import spriteSheet
 pygame.init()
 
 player_img = pygame.image.load('./img/run_0.png')
 player_rect = player_img.get_rect()
 
-win = pygame.display.set_mode((320, 320))
+SCALE = 2
+BG = (211, 211, 211)
+win = pygame.display.set_mode((320 * SCALE, 320 * SCALE))
+
 
 # Map stuff here!
-map = TileMap('map.csv','map.tmx')
+sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
+sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
+
+
+map = TileMap('map.csv', 'map.tmx', sprite_sheet, SCALE)
 player_rect.x, player_rect.y = map.start_x, map.start_y
 
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
@@ -37,7 +45,7 @@ down = False
 walkCount = 0
 
 isJump = False
-jumpCount = 10
+jumpCount = 3
 
 def redrawGameWindow():
     global walkCount
@@ -61,12 +69,14 @@ def redrawGameWindow():
         walkCount +=1
     else:
         win.blit(char, (x,y))
+
     
     pygame.display.update()
 
 #mainloop
 run = True
 while run:
+  win.fill(BG)
 #   clock.tick(27)
 #   #pygame.time.delay(100)
 #   #check for event
@@ -111,7 +121,7 @@ while run:
     #600 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
     y += vel
   
-  win.fill((0, 0, 0))
+  # win.fill((0, 0, 0))
   #this will fill the background with black so you don't see a trail of red rectangles
 
 #   #pygame.draw.rect(win, (255, 0, 0), (x, y, width, height))
@@ -125,7 +135,7 @@ while run:
             left = False
             walkCount = 0
   else:
-        if jumpCount >= -10:
+        if jumpCount >= -3:
             neg = 1
             if jumpCount < 0:
                 neg = -1
@@ -133,7 +143,7 @@ while run:
             jumpCount -= 1
         else:
             isJump = False
-            jumpCount = 10
+            jumpCount = 3
             
   redrawGameWindow()
 
