@@ -1,5 +1,15 @@
 import pygame
+from tiles import *
 pygame.init()
+
+player_img = pygame.image.load('./img/run_0.png')
+player_rect = player_img.get_rect()
+
+# Map stuff here!
+map = TileMap('map.csv')
+player_rect.x, player_rect.y = map.start_x, map.start_y
+
+
 
 win = pygame.display.set_mode((1240, 600))
 
@@ -7,7 +17,7 @@ pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
 walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
 walkLeft = [pygame.image.load('./img/run_0_left.png'), pygame.image.load('./img/run_1_left.png'), pygame.image.load('./img/run_2_left.png'), pygame.image.load('./img/run_3_left.png'), pygame.image.load('./img/run_4_left.png'), pygame.image.load('./img/run_5_left.png')]
-bg = pygame.image.load('./img/spy_wallpaper.jpeg')
+# bg = pygame.image.load('./hacker.jpeg')
 char = pygame.image.load('./img/idle_0.png')
 
 clock = pygame.time.Clock()
@@ -32,7 +42,8 @@ jumpCount = 10
 
 def redrawGameWindow():
     global walkCount
-    win.blit(bg, (0,0))
+    # win.blit(bg, (0,0))
+    map.draw_map(win)
 
     if walkCount + 1 >= 27:
         walkCount = 0
