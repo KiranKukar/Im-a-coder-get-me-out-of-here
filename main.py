@@ -1,4 +1,4 @@
-import pygame
+import pygame   
 pygame.init()
 
 win = pygame.display.set_mode((1240, 600))
@@ -38,16 +38,16 @@ def redrawGameWindow():
         walkCount = 0
 
     if left:
-        win.blit(walkLeft[walkCount//5], (x,y))
+        win.blit(walkLeft[walkCount//6], (x,y))
         walkCount += 1
     elif right:
-        win.blit(walkRight[walkCount//5], (x,y))
+        win.blit(walkRight[walkCount//6], (x,y))
         walkCount +=1
     elif up:
-        win.blit(walkRight[walkCount//5], (x,y))
+        win.blit(walkRight[walkCount//6], (x,y))
         walkCount +=1
     elif down:
-        win.blit(walkRight[walkCount//5], (x,y))
+        win.blit(walkRight[walkCount//6], (x,y))
         walkCount +=1
     else:
         win.blit(char, (x,y))
