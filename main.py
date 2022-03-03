@@ -1,3 +1,4 @@
+from tkinter import TRUE
 import pygame
 from tiles import *
 pygame.init()
@@ -5,18 +6,16 @@ pygame.init()
 player_img = pygame.image.load('./img/run_0.png')
 player_rect = player_img.get_rect()
 
+win = pygame.display.set_mode((320, 320))
+
 # Map stuff here!
-map = TileMap('map.csv')
+map = TileMap('map.csv','map.tmx')
 player_rect.x, player_rect.y = map.start_x, map.start_y
-
-
-
-win = pygame.display.set_mode((1240, 600))
 
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
 walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
-walkLeft = [pygame.image.load('./img/run_0_left.png'), pygame.image.load('./img/run_1_left.png'), pygame.image.load('./img/run_2_left.png'), pygame.image.load('./img/run_3_left.png'), pygame.image.load('./img/run_4_left.png'), pygame.image.load('./img/run_5_left.png')]
+walkLeft = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
 # bg = pygame.image.load('./hacker.jpeg')
 char = pygame.image.load('./img/idle_0.png')
 
@@ -92,10 +91,19 @@ while run:
     x += vel
     right = True
     left = False
+  elif keys[pygame.K_UP] and x < 1240 - width - vel:
+    up = True
+    right = False
+    left = False
+  elif keys[pygame.K_DOWN] and x < 1240 - width - vel:
+    down = True
+    right = True
+    left = False
   else:
     right = False
     left = False
-    walkCount = 0
+    up = False
+    down = False
 
   if keys[pygame.K_UP] and y > vel:
     y -= vel

@@ -1,4 +1,4 @@
-import pygame, csv, os
+import pygame, csv, os, pytmx
 
 class Tile(pygame.sprite.Sprite):
   def __init__(self, image, x, y):
@@ -7,7 +7,7 @@ class Tile(pygame.sprite.Sprite):
     pygame.sprite.Sprite.__init__(self)
 
     # Load in image
-    self.image = pygame.image.load(image)
+    self.image = image
 
     # Store image in rectangle object (and assign x, y coordinates)
     self.rect = self.image.get_rect()
@@ -21,12 +21,16 @@ class Tile(pygame.sprite.Sprite):
     surface.blit(self.image, (self.rect.x, self.rect.y))
 
 class TileMap():
-  def __init__(self, filename):
+  def __init__(self, filename, tmxfile):
     self.tile_size = 16
 
     # starting coordinates of player sprite
     self.start_x, self.start_y = 0, 0 
     # self.image = image
+
+    # import tmx file
+    tm = pytmx.load_pygame(tmxfile, pixelalpha=True)
+    self.tmxdata = tm
 
     # runs load tiles function
     self.tiles = self.load_tiles(filename)
@@ -60,15 +64,15 @@ class TileMap():
     for row in map:
       x = 0
       for tile in row:
-        if tile == '0':
+        print(x, y)
+
+        if tile == '-1':
           self.start_x, self.start_y = x * self.tile_size, y * self.tile_size
-        elif tile == '192':
-          tiles.append(Tile('dungeon_sheet.png', x * self.tile_size, y * self.tile_size))
-        elif tile == '-1':
-          tiles.append(Tile('hacker.jpeg', x * self.tile_size, y * self.tile_size))
+        else:
+          print(self.tmxdata.get_tile_gid(x, y, 0))
+          tiles.append(Tile(self.tmxdata.get_tile_image_by_gid(self.tmxdata.get_tile_gid(x, y, 0)), x * self.tile_size, y * self.tile_size))
         # Move to next tile in current row
         x +=1
-
       # Move to next row  
       y += 1
     
