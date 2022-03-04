@@ -8,8 +8,8 @@ player_img = pygame.image.load('./img/run_0.png')
 player_rect = player_img.get_rect()
 
 SCALE = 2
-BG = (211, 211, 211)
-win = pygame.display.set_mode((320 * SCALE, 320 * SCALE))
+BG = (185, 237, 214)
+win = pygame.display.set_mode((336 * SCALE, 336 * SCALE))
 
 
 # Map stuff here!
@@ -17,16 +17,17 @@ sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
 sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 
 
-map = TileMap('map.csv', sprite_sheet, SCALE)
+map = TileMap('map21x21.csv', sprite_sheet, SCALE)
 player_rect.x, player_rect.y = map.start_x, map.start_y
 
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
 walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
-walkLeft = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
+walkLeft = [pygame.image.load('./img/left_run_0.png'), pygame.image.load('./img/left_run_1.png'), pygame.image.load('./img/left_run_2.png'), pygame.image.load('./img/left_run_3.png'), pygame.image.load('./img/left_run_4.png'), pygame.image.load('./img/left_run_5.png')]
 # bg = pygame.image.load('./hacker.jpeg')
-char = pygame.image.load('./img/idle_0.png')
-
+# char = [pygame.image.load('./img/idle_0.png'), pygame.image.load('./img/idle_1.png'), pygame.image.load('./img/idle_2.png'), pygame.image.load('./img/idle_3.png'), pygame.image.load('./img/idle_0.png'), pygame.image.load('./img/idle_1.png'), pygame.image.load('./img/idle_2.png'), pygame.image.load('./img/idle_3.png')]
+char = pygame.image.load('./img/x_2.png')
+freakOut = [pygame.image.load('./img/x_1.png'), pygame.image.load('./img/x_3.png'), pygame.image.load('./img/x_1.png'), pygame.image.load('./img/x_3.png'), pygame.image.load('./img/x_1.png'), pygame.image.load('./img/x_3.png')]
 clock = pygame.time.Clock()
 
 #starting position of sprite
@@ -67,8 +68,14 @@ def redrawGameWindow():
     elif down:
         win.blit(walkRight[walkCount//5], (x,y))
         walkCount +=1
+    elif freakout:
+        win.blit(freakOut[walkCount//10], (x,y))
+        walkCount +=1
+        pygame.display.set_caption("FReAK AFfrreeeeeaAAAAKkkk fRFREEEAAKKKK OOOOuuuuUTtttt !!!£!!&%!")
     else:
-        win.blit(char, (x,y))
+      char = [pygame.image.load('./img/idle_0.png'), pygame.image.load('./img/idle_1.png'), pygame.image.load('./img/idle_2.png'), pygame.image.load('./img/idle_3.png'), pygame.image.load('./img/idle_0.png'), pygame.image.load('./img/idle_1.png'), pygame.image.load('./img/idle_2.png'), pygame.image.load('./img/idle_3.png')]
+      win.blit(char[walkCount//20], (x,y))
+      walkCount +=1
 
     
     pygame.display.update()
@@ -93,7 +100,7 @@ while run:
     #vel changes speed of movement
     left = True
     right = False
-  elif keys[pygame.K_RIGHT] and x < 1240 - width - vel:
+  elif keys[pygame.K_RIGHT] and x < 366 * SCALE - width - vel:
     #character not allowed to move off right of screen
     #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
     #width is the width of the character
@@ -101,23 +108,32 @@ while run:
     x += vel
     right = True
     left = False
-  elif keys[pygame.K_UP] and x < 1240 - width - vel:
+  elif keys[pygame.K_UP] and x < 336 * SCALE - width - vel:
     up = True
     right = False
     left = False
-  elif keys[pygame.K_DOWN] and x < 1240 - width - vel:
+  elif keys[pygame.K_DOWN] and x < 350 * SCALE - width - vel:
     down = True
     right = True
     left = False
+  elif keys[pygame.K_f]:
+    freakout = True
+  elif keys[pygame.K_m]:
+    char = pygame.image.load('./img/x_2.png')
+    win.blit(char, (x,y))
+    redrawGameWindow()
+    pygame.time.wait(3000)
   else:
     right = False
     left = False
     up = False
     down = False
+    freakout = False
+    pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
   if keys[pygame.K_UP] and y > vel:
     y -= vel
-  if keys[pygame.K_DOWN] and y < 600 - height - vel:
+  if keys[pygame.K_DOWN] and y < 350 * SCALE - height - vel:
     #600 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
     y += vel
   
