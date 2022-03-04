@@ -1,4 +1,7 @@
-import pygame   
+from tkinter import TRUE
+import pygame
+from tiles import *
+import spriteSheet
 pygame.init()
 
 player_img = pygame.image.load('./img/run_0.png')
@@ -73,26 +76,11 @@ class player(object):
             self.walkCount +=1
 
 def redrawGameWindow():
-    global walkCount
-    win.blit(bg, (0,0))
-
-    if walkCount + 1 >= 27:
-        walkCount = 0
-
-    if left:
-        win.blit(walkLeft[walkCount//6], (x,y))
-        walkCount += 1
-    elif right:
-        win.blit(walkRight[walkCount//6], (x,y))
-        walkCount +=1
-    elif up:
-        win.blit(walkRight[walkCount//6], (x,y))
-        walkCount +=1
-    elif down:
-        win.blit(walkRight[walkCount//6], (x,y))
-        walkCount +=1
-    else:
-        win.blit(char, (x,y))
+    # global walkCount
+    map.draw_map(win)
+    # win.blit(map, (0,0))   #This will draw our background image at (0,0)
+                          #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
+    spy.draw(win)
     
     pygame.display.update()
 
