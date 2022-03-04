@@ -120,6 +120,8 @@ while run:
         spy.y += spy.vel
         spy.right = True
         spy.left = False
+  elif keys[pygame.K_ESCAPE]:
+        break
 
   else:
         spy.right = False
