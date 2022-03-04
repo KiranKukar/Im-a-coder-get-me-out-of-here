@@ -1,8 +1,12 @@
 from tkinter import TRUE
 import pygame
-from tiles import *
 import spriteSheet
 import pygame_gui
+
+from tiles import *
+from player import *
+from popup import *
+
 pygame.init()
 
 player_img = pygame.image.load('./img/run_0.png')
@@ -15,15 +19,12 @@ BG = (185, 237, 214)
 win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
 # Popup GUI
-manager = pygame_gui.UIManager((WIN_WIDTH, WIN_HEIGHT))
+popup = Popup(WIN_WIDTH, WIN_HEIGHT)
+# manager = pygame_gui.UIManager((WIN_WIDTH, WIN_HEIGHT))
 
-hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100, 275), (500, 50)),
-                                    text='Click me to make me disappear',
-                                    manager=manager)  
-
-# hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
-#                                             text='Say Hello',
-#                                             manager=manager)
+# hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100, 275), (500, 50)),
+#                                     text='Click me to make me disappear',
+#                                     manager=manager)  
 
 # Map Tiling
 sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
@@ -33,11 +34,6 @@ sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 map = TileMap('map21x21.csv', sprite_sheet, SCALE)
 player_rect.x, player_rect.y = map.start_x, map.start_y
 
-char = pygame.image.load('./img/idle_0.png')
-walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
-walkLeft = [pygame.image.load('./img/left_run_0.png'), pygame.image.load('./img/left_run_1.png'), pygame.image.load('./img/left_run_2.png'), pygame.image.load('./img/left_run_3.png'), pygame.image.load('./img/left_run_4.png'), pygame.image.load('./img/left_run_5.png')]
-idle = [pygame.image.load('./img/idle_0.png'), pygame.image.load('./img/idle_1.png'), pygame.image.load('./img/idle_2.png'), pygame.image.load('./img/idle_3.png')]
-
 #self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
 ##built in method to flip the images
 
@@ -46,42 +42,6 @@ clock = pygame.time.Clock()
 # Timer for Popup Manager GUI
 time_delta = clock.tick(60)/1000.0
 draw_ui = False
-
-class player(object):
-    def __init__(self,x,y,width,height):
-        #starting position of sprite
-        self.x = x
-        self.y = y
-        #dimensions of sprite
-        self.width = width
-        self.height = height
-        self.vel = 5
-        self.left = False
-        self.right = False
-        self.up = False
-        self.down = False
-        self.walkCount = 0
-        self.isJump = False
-        self.jumpCount = 5
-
-    def draw(self, win):
-        if self.walkCount + 1 >= 27:
-            self.walkCount = 0
-        if self.left:
-            win.blit(walkLeft[self.walkCount//6], (self.x,self.y))
-            self.walkCount += 1
-        elif self.right:
-            win.blit(walkRight[self.walkCount//6], (self.x,self.y))
-            self.walkCount +=1
-        elif self.up:
-            win.blit(walkRight[self.walkCount//6], (self.x,self.y))
-            self.walkCount +=1
-        elif self.down:
-            win.blit(walkRight[self.walkCount//6], (self.x,self.y))
-            self.walkCount +=1
-        else:
-            win.blit(idle[self.walkCount//20], (self.x,self.y))
-            self.walkCount +=1
 
 def redrawGameWindow():
     # global walkCount
@@ -93,7 +53,7 @@ def redrawGameWindow():
     pygame.display.update()
 
 #mainloop
-spy = player(304, 550, 64, 64)
+spy = Player(304, 550, 64, 64)
 run = True
 while run:
   win.fill(BG)
@@ -106,13 +66,14 @@ while run:
       run=False   #Ends the game loop
 
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
-      if event.ui_element == hello_button:
+      if event.ui_element == popup.hello_button:
         draw_ui = False
     
-    manager.process_events(event)
-    manager.update(time_delta)   
+    popup.manager.process_events(event)
+    popup.manager.update(time_delta)   
   if draw_ui == True:  
-    manager.draw_ui(win) 
+    popup.manager.draw_ui(win) 
+
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
   if keys[pygame.K_LEFT] and spy.x > spy.vel:   #vel changes speed of movement
