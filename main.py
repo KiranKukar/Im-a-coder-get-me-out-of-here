@@ -20,10 +20,10 @@ sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 map = TileMap('map21x21.csv', sprite_sheet, SCALE)
 player_rect.x, player_rect.y = map.start_x, map.start_y
 
+char = pygame.image.load('./img/idle_0.png')
 walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
 walkLeft = [pygame.image.load('./img/left_run_0.png'), pygame.image.load('./img/left_run_1.png'), pygame.image.load('./img/left_run_2.png'), pygame.image.load('./img/left_run_3.png'), pygame.image.load('./img/left_run_4.png'), pygame.image.load('./img/left_run_5.png')]
-# bg = pygame.image.load('./img/spy_wallpaper.jpeg')
-char = pygame.image.load('./img/idle_0.png')#, pygame.image.load('./img/idle_1.png'), pygame.image.load('./img/idle_2.png'), pygame.image.load('./img/idle_3.png')]
+idle = [pygame.image.load('./img/idle_0.png'), pygame.image.load('./img/idle_1.png'), pygame.image.load('./img/idle_2.png'), pygame.image.load('./img/idle_3.png')]
 
 #self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
 ##built in method to flip the images
@@ -45,7 +45,7 @@ class player(object):
         self.down = False
         self.walkCount = 0
         self.isJump = False
-        self.jumpCount = 10
+        self.jumpCount = 5
 
 
 # x=300
@@ -72,7 +72,8 @@ class player(object):
             win.blit(walkRight[self.walkCount//6], (self.x,self.y))
             self.walkCount +=1
         else:
-            win.blit(char, (self.x,self.y))
+            win.blit(idle[self.walkCount//20], (self.x,self.y))
+            self.walkCount +=1
 
 def redrawGameWindow():
     # global walkCount
@@ -123,7 +124,7 @@ while run:
   else:
         spy.right = False
         spy.left = False
-        spy.walkCount = 0
+        # spy.walkCount = 0
         
   if not(spy.isJump):
         if keys[pygame.K_SPACE]:
@@ -132,7 +133,7 @@ while run:
             spy.left = False
             spy.walkCount = 0
   else:
-        if spy.jumpCount >= -10:
+        if spy.jumpCount >= -5:
             neg = 1
             if spy.jumpCount < 0:
                 neg = -1
@@ -140,7 +141,7 @@ while run:
             spy.jumpCount -= 1
         else:
             spy.isJump = False
-            spy.jumpCount = 10
+            spy.jumpCount = 5
   
   #this will fill the background with black so you don't see a trail of red rectangles
 
