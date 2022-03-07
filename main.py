@@ -37,7 +37,7 @@ player_rect.x, player_rect.y = map.start_x, map.start_y
 #self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
 ##built in method to flip the images
 
-clock = pygame.time.Clock()
+clock = pygame.time.Clock()   #Used to manage how fast the screen updates
 
 # Timer for Popup Manager GUI
 time_delta = clock.tick(60)/1000.0
@@ -49,10 +49,12 @@ def redrawGameWindow():
     # win.blit(map, (0,0))   #This will draw our background image at (0,0)
                           #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
     spy.draw(win)
+
+    if draw_ui == True:  
+      popup.manager.draw_ui(win) 
     
     pygame.display.update()
 
-#mainloop
 spy = Player(304, 550, 64, 64)
 run = True
 while run:
@@ -60,19 +62,18 @@ while run:
 #   clock.tick(27)
 #   #pygame.time.delay(100)   #This will delay the game the given amount of milliseconds. In our casee 0.1 seconds will be the delay
 #   #check for event
-  for event in pygame.event.get():   #This will loop through a list of any keyboard or mouse events.
+#EVENT PROCESSING LOOP
+  for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
     if event.type == pygame.QUIT:   #Checks if the red button in the corner of the window is clicked
 #       #if you hit big red button in corner to close window, then game will end also
       run=False   #Ends the game loop
 
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
-      if event.ui_element == popup.hello_button:
+      if event.ui_element == popup.answer_button_1:
         draw_ui = False
     
     popup.manager.process_events(event)
     popup.manager.update(time_delta)   
-  if draw_ui == True:  
-    popup.manager.draw_ui(win) 
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
@@ -100,7 +101,6 @@ while run:
         draw_ui = True
   elif keys[pygame.K_b]:
         draw_ui = False
-
   elif keys[pygame.K_ESCAPE]:
         break
 
