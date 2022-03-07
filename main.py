@@ -20,11 +20,6 @@ win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
 # Popup GUI
 popup = Popup(WIN_WIDTH, WIN_HEIGHT)
-# manager = pygame_gui.UIManager((WIN_WIDTH, WIN_HEIGHT))
-
-# hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((100, 275), (500, 50)),
-#                                     text='Click me to make me disappear',
-#                                     manager=manager)  
 
 # Map Tiling
 sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
@@ -59,21 +54,19 @@ spy = Player(304, 550, 64, 64)
 run = True
 while run:
   win.fill(BG)
-#   clock.tick(27)
-#   #pygame.time.delay(100)   #This will delay the game the given amount of milliseconds. In our casee 0.1 seconds will be the delay
-#   #check for event
+  clock.tick(27)
+
 #EVENT PROCESSING LOOP
   for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
     if event.type == pygame.QUIT:   #Checks if the red button in the corner of the window is clicked
-#       #if you hit big red button in corner to close window, then game will end also
       run=False   #Ends the game loop
 
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
       if event.ui_element == popup.answer_button_1:
         draw_ui = False
-    
-    popup.manager.process_events(event)
-    popup.manager.update(time_delta)   
+
+  popup.manager.process_events(event)
+  popup.manager.update(time_delta)
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
@@ -103,11 +96,9 @@ while run:
         draw_ui = False
   elif keys[pygame.K_ESCAPE]:
         break
-
   else:
         spy.right = False
         spy.left = False
-        # spy.walkCount = 0
         
   if not(spy.isJump):
         if keys[pygame.K_SPACE]:
@@ -125,11 +116,6 @@ while run:
         else:
             spy.isJump = False
             spy.jumpCount = 5
-  
-  #this will fill the background with black so you don't see a trail of red rectangles
-
-#   #pygame.draw.rect(win, (255, 0, 0), (x, y, width, height))   #This takes: window/surface, color, rect
-#   #pygame.display.update()   #This updates the screen so we can see our rectangle
             
   redrawGameWindow()
 
