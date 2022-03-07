@@ -1,5 +1,6 @@
 from tkinter import TRUE
 import pygame
+from pygame.locals import *
 from tiles import *
 import spriteSheet
 pygame.init()
@@ -7,7 +8,7 @@ pygame.init()
 player_img = pygame.image.load('./img/run_0.png')
 player_rect = player_img.get_rect()
 
-SCALE = 2
+SCALE = 2 
 BG = (185, 237, 214)
 win = pygame.display.set_mode((336 * SCALE, 336 * SCALE))
 
@@ -57,6 +58,10 @@ class player(object):
 # vel=5
 
     def draw(self, win):
+      # if there is a collision
+        # do the collision movement
+      # elif
+        #do this below
         if self.walkCount + 1 >= 27:
             self.walkCount = 0
         if self.left:
@@ -81,8 +86,39 @@ def redrawGameWindow():
     # win.blit(map, (0,0))   #This will draw our background image at (0,0)
                           #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
     spy.draw(win)
+
+    # collision check will be called here?
     
     pygame.display.update()
+
+def collision_test(rect, tiles): # rect of player and list of tiles
+  hit_list = []
+  for tile in tiles:
+    if Rect.colliderect(rect, tile):
+      hit_list.append(tile)
+  return hit_list
+
+def move(rect, movement, tile): #rect of player, movement of player, put tile - should it be tiles?
+  collision_types = { 'top': False, 'bottom': False, 'right': False, 'left': False }
+  rect.x += movement[0] # check the moevemt is how it's in our codes
+  hit_list = collision_test(rect, tile)
+  for tile in hit_list:
+    if movement[0] > 0:
+      rect.right = tile.left
+      collision_types['right'] = True
+    elif movement[0] < 0:
+      rect.left = tile.right
+      collision_types['left'] = True
+  rect.y += movement[1]
+  hit_list = collision_test(rect, tile)
+  for tile in hit_list:
+    if movement[1] > 0:
+      rect.bottom = tile.top
+      collision_type['bottom'] = True
+    elif movement[1] < 0:
+      rect.top = tile.bottom
+      collision_types['top'] = True
+  return rect, collision_types
 
 #mainloop
 spy = player(200, 410, 64,64)
@@ -101,7 +137,7 @@ while run:
 
 
   if keys[pygame.K_LEFT] and spy.x > spy.vel:   #vel changes speed of movement
-        spy.x -= spy.vel
+        spy.x -= spy.vel # sets locatioin of spy - and does the same below
         spy.left = True
         spy.right = False
   elif keys[pygame.K_RIGHT] and spy.x < 1260 - spy.width - spy.vel:
