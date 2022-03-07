@@ -11,6 +11,7 @@ player_rect = player_img.get_rect()
 SCALE = 2 
 BG = (185, 237, 214)
 win = pygame.display.set_mode((336 * SCALE, 336 * SCALE))
+win_rect = win.get_rect()
 
 
 # Map stuff here
@@ -86,9 +87,9 @@ def redrawGameWindow():
     map.draw_map(win)
     # win.blit(map, (0,0))   #This will draw our background image at (0,0)
                           #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
-    spy.draw(win)
+    spy.rect, collisions = move(player_rect, player_movement, map.tiles_rects)
 
-    spy_rect, collisions = move(player_rect, player_movement, map.tiles_rects)
+    spy.draw(win)
 
     
     pygame.display.update()
@@ -104,16 +105,18 @@ def move(rect, movement, tile): #rect of player, movement of player, put tile - 
   collision_types = { 'top': False, 'bottom': False, 'right': False, 'left': False }
   rect.x += movement[0] # check the moevemt is how it's in our codes
   hit_list = collision_test(rect, tile)
-  for tile in hit_list:
+  for hit_tile in hit_list:
+    tile_rect = Rect(hit_tile)
     if movement[0] > 0:
-      rect.right = tile.left
+      rect.right = tile_rect.left
       collision_types['right'] = True
     elif movement[0] < 0:
-      rect.left = tile.right
+      rect.left = tile_rect.right
       collision_types['left'] = True
   rect.y += movement[1]
   hit_list = collision_test(rect, tile)
-  for tile in hit_list:
+  for hit_tile in hit_list:
+    tile_rect = Rect(hit_tile)
     if movement[1] > 0:
       rect.bottom = tile.top
       collision_types['bottom'] = True
@@ -125,6 +128,7 @@ def move(rect, movement, tile): #rect of player, movement of player, put tile - 
 #mainloop
 spy = player(200, 410, 64,64)
 run = True
+
 while run:
   win.fill(BG)
 #   clock.tick(27)
@@ -138,11 +142,11 @@ while run:
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
 
-  if keys[pygame.K_LEFT] and spy.x > spy.vel:   #vel changes speed of movement
+  if keys[pygame.K_LEFT]:   #vel changes speed of movement
         spy.x -= spy.vel # sets locatioin of spy - and does the same below
         spy.left = True
         spy.right = False
-  elif keys[pygame.K_RIGHT] and spy.x < 1260 - spy.width - spy.vel:
+  elif keys[pygame.K_RIGHT]:
         #character not allowed to move off right of screen
         #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
         #width is the width of the character
@@ -150,11 +154,11 @@ while run:
         spy.x += spy.vel
         spy.right = True
         spy.left = False
-  elif keys[pygame.K_UP] and spy.y > spy.vel:
+  elif keys[pygame.K_UP]:
         spy.y -= spy.vel
         spy.right = True
         spy.left = False
-  elif keys[pygame.K_DOWN] and spy.y < 700 - spy.height - spy.vel:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+  elif keys[pygame.K_DOWN]:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
         spy.y += spy.vel
         spy.right = True
         spy.left = False
@@ -163,6 +167,7 @@ while run:
         spy.right = False
         spy.left = False
         # spy.walkCount = 0
+  player_rect.clamp_ip(win_rect)
 
   player_movement = [spy.x, spy.y]
   player_rect = spy.rect
