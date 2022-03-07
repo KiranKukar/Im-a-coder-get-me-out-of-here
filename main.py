@@ -47,6 +47,7 @@ class player(object):
         self.walkCount = 0
         self.isJump = False
         self.jumpCount = 5
+        self.rect = pygame.Rect(200, 410, 64,64)
 
 
 # x=300
@@ -87,14 +88,15 @@ def redrawGameWindow():
                           #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
     spy.draw(win)
 
-    # collision check will be called here?
+    spy_rect, collisions = move(player_rect, player_movement, map.tiles_rects)
+
     
     pygame.display.update()
 
 def collision_test(rect, tiles): # rect of player and list of tiles
   hit_list = []
   for tile in tiles:
-    if Rect.colliderect(rect, tile):
+    if rect.colliderect(tile):
       hit_list.append(tile)
   return hit_list
 
@@ -114,7 +116,7 @@ def move(rect, movement, tile): #rect of player, movement of player, put tile - 
   for tile in hit_list:
     if movement[1] > 0:
       rect.bottom = tile.top
-      collision_type['bottom'] = True
+      collision_types['bottom'] = True
     elif movement[1] < 0:
       rect.top = tile.bottom
       collision_types['top'] = True
@@ -161,6 +163,11 @@ while run:
         spy.right = False
         spy.left = False
         # spy.walkCount = 0
+
+  player_movement = [spy.x, spy.y]
+  player_rect = spy.rect
+
+  
         
   if not(spy.isJump):
         if keys[pygame.K_SPACE]:

@@ -29,9 +29,10 @@ class TileMap():
     # starting coordinates of player sprite
     self.start_x, self.start_y = 0, 0 
     # self.image = image
-
+    self.tiles_rects = []
     # runs load tiles function
     self.tiles = self.load_tiles(filename)
+    
 
     # Creates map surface
     self.map_surface = pygame.Surface((self.map_w, self.map_h))
@@ -57,7 +58,6 @@ class TileMap():
   # loads tiles
   def load_tiles(self, filename):
     tiles = []
-    this.tiles_rects = []
     map = self.read_csv(filename)
     x, y = 0, 0
     for row in map:
@@ -66,7 +66,8 @@ class TileMap():
         image = self.sprite_sheet.get_image(int(tile), self.tile_size, self.tile_size, self.scale)
         tiles.append(Tile(image, x * self.tile_size * self.scale, y * self.tile_size * self.scale))
         # tile.rect((x*2*16,y*16*2)(16*2,16*2)) (explains the next line)
-        this.tiles.rects.append(pygame.Rect(x * self.tile_size * self.scale, y * self.tile_size * self.scale, self.tile_size * self.scale, self.tile_size * self.scale))
+        tile_rect = ((x * self.tile_size * self.scale, y * self.tile_size * self.scale), (self.tile_size * self.scale, self.tile_size * self.scale))
+        self.tiles_rects.append(tile_rect)
         # Move to next tile in current row
         x +=1
       # Move to next row  
