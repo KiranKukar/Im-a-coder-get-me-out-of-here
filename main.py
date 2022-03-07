@@ -19,6 +19,13 @@ BG = (185, 237, 214)
 win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
 # Popup GUI
+question = "Hello there, can you tell me, what is the best way to why are you going to how come the first time a which way up is the what?"
+answers = [
+        "Answer 1 goes here.",
+        "Answer 2 goes here.",
+        "Answer 3 goes here.",
+        "Answer 4 goes here.",
+      ]
 popup = Popup(WIN_WIDTH, WIN_HEIGHT)
 
 # Map Tiling
@@ -54,7 +61,7 @@ spy = Player(304, 550, 64, 64)
 run = True
 while run:
   win.fill(BG)
-  clock.tick(27)
+#   clock.tick(27)
 
 #EVENT PROCESSING LOOP
   for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
@@ -90,7 +97,8 @@ while run:
         spy.y += spy.vel
         spy.right = True
         spy.left = False
-  elif keys[pygame.K_a]:    
+  elif keys[pygame.K_a]:
+        popup.question(question, answers) 
         draw_ui = True
   elif keys[pygame.K_b]:
         draw_ui = False
