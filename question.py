@@ -8,19 +8,13 @@ class Question():
 
     self.question_bank = question_bank
     self.question_info = question_bank.list[number]
-    self.question_ui = Question_ui(manager, self.question_bank.list[number], win_width, win_height)
-    
-
-    self.question_textbox = self.question_ui.question_textbox.element
-    self.answer_button_1 = self.question_ui.answer_button_1.element
-    self.answer_button_2 = self.question_ui.answer_button_2.element
-    self.answer_button_3 = self.question_ui.answer_button_3.element
-    self.answer_button_4 = self.question_ui.answer_button_4.element
 
 class Questions():
   def __init__(self, popup, win_width, win_height):
     question_bank = Question_bank()
     Question_setup(question_bank)
+
+    self.question_ui = Question_ui(popup.manager, win_width, win_height)
     self.q1 = Question(popup.manager, 1, win_width, win_height, question_bank)
     self.q2 = Question(popup.manager, 2, win_width, win_height, question_bank)
     self.q3 = Question(popup.manager, 3, win_width, win_height, question_bank)
@@ -28,3 +22,12 @@ class Questions():
     self.q5 = Question(popup.manager, 5, win_width, win_height, question_bank)
     self.q6 = Question(popup.manager, 6, win_width, win_height, question_bank)
 
+    self.question_textbox = self.question_ui.question_textbox.element
+    self.answer_button_1 = self.question_ui.answer_button_1.element
+    self.answer_button_2 = self.question_ui.answer_button_2.element
+    self.answer_button_3 = self.question_ui.answer_button_3.element
+    self.answer_button_4 = self.question_ui.answer_button_4.element
+
+  def load_question(self, question_info):
+    self.question_ui.load_question(question_info)
+    self.loaded_question_info = question_info

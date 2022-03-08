@@ -30,7 +30,7 @@ class Textbox():
   def __init__(self, left_padding, top_padding, width, height, html_text, manager, container):
     self.element = pygame_gui.elements.UITextBox(
                         relative_rect=pygame.Rect(left_padding, top_padding, width, height),
-                        html_text=f'<font color=#03A062><b>{html_text}</b></font>',
+                        html_text=f'{html_text}',
                         manager=manager,
                         container=container)        
 
@@ -38,16 +38,13 @@ class Textbox():
     self.element.set_active_effect(pygame_gui.TEXT_EFFECT_TYPING_APPEAR, params = {'time_per_letter': .01})
 
 class Question_ui():
-  def __init__(self, manager, question_info, win_width, win_height):
+  def __init__(self, manager, win_width, win_height):
     self.manager = manager
-    self.question = question_info.question
-    self.answers = question_info.answers
 
     self.create_ui_window(win_width, win_height)
     self.create_textbox()
     self.create_buttons()
     self.hide_all()
-
 
   def create_ui_window(self, win_width, win_height):
     ui_window_percentage_size = 0.75
@@ -62,8 +59,7 @@ class Question_ui():
     self.ui_window.element.hide()
   
   def create_textbox(self):
-    question_text = self.question
-    self.question_textbox = Textbox(50, 40, 375, 150, question_text, self.manager, self.ui_window.element)
+    self.question_textbox = Textbox(50, 40, 375, 150, "Question Placeholder", self.manager, self.ui_window.element)
     self.question_textbox.text_effect_typing_appear()
 
   def show_question_textbox(self):
@@ -77,10 +73,10 @@ class Question_ui():
     answer_button_width = 375
     answer_button_height = 50
 
-    self.answer_button_1 = Button(answer_button_padding_left, 205, answer_button_width, answer_button_height, self.answers[0], self.manager, self.ui_window.element)
-    self.answer_button_2 = Button(answer_button_padding_left, 255, answer_button_width, answer_button_height, self.answers[1], self.manager, self.ui_window.element)
-    self.answer_button_3 = Button(answer_button_padding_left, 305, answer_button_width, answer_button_height, self.answers[2], self.manager, self.ui_window.element)
-    self.answer_button_4 = Button(answer_button_padding_left, 355, answer_button_width, answer_button_height, self.answers[3], self.manager, self.ui_window.element)
+    self.answer_button_1 = Button(answer_button_padding_left, 205, answer_button_width, answer_button_height, "Answer 1 Placeholder", self.manager, self.ui_window.element)
+    self.answer_button_2 = Button(answer_button_padding_left, 255, answer_button_width, answer_button_height, "Answer 2 Placeholder", self.manager, self.ui_window.element)
+    self.answer_button_3 = Button(answer_button_padding_left, 305, answer_button_width, answer_button_height, "Answer 3 Placeholder", self.manager, self.ui_window.element)
+    self.answer_button_4 = Button(answer_button_padding_left, 355, answer_button_width, answer_button_height, "Answer 4 Placeholder", self.manager, self.ui_window.element)
 
   def show_buttons(self):
     self.answer_button_1.element.show()
@@ -104,12 +100,47 @@ class Question_ui():
     self.show_question_textbox()
     self.show_buttons()
 
+  def load_question(self, question_info):
+    self.question_info = question_info
+
+    self.write_all()
+    self.show_all()
+
+  def answered_correctly(self):
+    self.disable_all()
+
+  def answered_incorrectly(self):
+    self.disable_all()
+
+  def disable_all(self):
+    self.answer_button_1.element.disable()
+    self.answer_button_2.element.disable()
+    self.answer_button_3.element.disable()
+    self.answer_button_4.element.disable()
 
 
-  # def disable_all(self):
-  #   self.
+  def enable_all(self):
+    self.answer_button_1.element.enable()
+    self.answer_button_2.element.enable()
+    self.answer_button_3.element.enable()
+    self.answer_button_4.element.enable()
 
-  #def enable_all
+  def write_buttons(self):
+    self.answer_button_1.element.set_text(self.question_info.answers[0])
+    self.answer_button_2.element.set_text(self.question_info.answers[1])
+    self.answer_button_3.element.set_text(self.question_info.answers[2])
+    self.answer_button_4.element.set_text(self.question_info.answers[3])
+
+  def write_question(self):
+    self.question_textbox.element.set_text(f'<font color=#03A062><b>{self.question_info.question}</b></font>')
+
+  def write_all(self):
+    self.write_buttons()
+    self.write_question()
+    
+   
+
+
 
   #writes the buttons - accepts lists of answers in order and prints associated answers in order
 

@@ -66,47 +66,47 @@ while run:
       run=False   #Ends the game loop
 
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
-      if event.ui_element == questions.q1.answer_button_1:
-        if questions.q1.answer_button_1.text == questions.q1.question_info.correct_answer:
-          questions.q1.question_textbox.set_text('Correct!')
+      if event.ui_element == questions.answer_button_1:
+        if questions.answer_button_1.text == questions.loaded_question_info.correct_answer:
+          questions.question_textbox.append_html_text(f'<br><br><i>Correct!</i>')
           redrawGameWindow()
           time.sleep(3)
           draw_ui  = False
         else:
-          questions.q1.question_textbox.set_text('wrong!')
+          questions.question_textbox.append_html_text(f'<br><br><i><font color=#FF0000>Wrong!</font></i>')
           redrawGameWindow()
           time.sleep(3)
           draw_ui  = False
-      if event.ui_element == questions.q1.answer_button_1:
-        if questions.q1.answer_button_2.text == questions.q1.question_info.correct_answer:
-          questions.q1.question_textbox.set_text('Correct!')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-        else:
-          questions.q1.question_textbox.set_text('wrong!')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-      if event.ui_element == questions.q1.answer_button_3:
-        if questions.q1.answer_button_3.text == questions.q1.question_info.correct_answer:
-          questions.q1.question_textbox.set_text('Correct!')
+      if event.ui_element == questions.answer_button_2:
+        if questions.answer_button_2.text == questions.loaded_question_info.correct_answer:
+          questions.question_textbox.set_text(questions.loaded_question_info.question + 'Correct!')
           redrawGameWindow()
           time.sleep(3)
           draw_ui  = False
         else:
-          questions.q1.question_textbox.set_text('wrong!')
+          questions.question_textbox.set_text('wrong!')
           redrawGameWindow()
           time.sleep(3)
           draw_ui  = False
-      if event.ui_element == questions.q1.answer_button_4:
-        if questions.q1.answer_button_4.text == questions.q1.question_info.correct_answer:
-          questions.q1.question_textbox.set_text('Correct!')
+      if event.ui_element == questions.answer_button_3:
+        if questions.answer_button_3.text == questions.loaded_question_info.correct_answer:
+          questions.question_textbox.set_text(questions.loaded_question_info.question + 'Correct!')
           redrawGameWindow()
           time.sleep(3)
           draw_ui  = False
         else:
-          questions.q1.question_textbox.set_text('wrong!')
+          questions.question_textbox.set_text('wrong!')
+          redrawGameWindow()
+          time.sleep(3)
+          draw_ui  = False
+      if event.ui_element == questions.answer_button_4:
+        if questions.answer_button_4.text == questions.loaded_question_info.correct_answer:
+          questions.question_textbox.set_text(questions.q1.question_info.question + 'Correct!')
+          redrawGameWindow()
+          time.sleep(3)
+          draw_ui  = False
+        else:
+          questions.question_textbox.set_text('wrong!')
           redrawGameWindow()
           time.sleep(3)
           draw_ui  = False
@@ -146,24 +146,10 @@ while run:
         draw_ui = False
 
   elif keys[pygame.K_1]:
-      questions.q1.question_ui.show_all()
+    questions.load_question(questions.q1.question_info)
   elif keys[pygame.K_2]:
-      questions.q2.question_ui.show_all()
-  elif keys[pygame.K_3]:
-      questions.q3.question_ui.show_all()
-  elif keys[pygame.K_4]:
-      questions.q4.question_ui.show_all()
-  elif keys[pygame.K_5]:
-      questions.q5.question_ui.show_all()
-  elif keys[pygame.K_6]:
-      questions.q6.question_ui.show_all()
-  elif keys[pygame.K_0]:
-      questions.q1.question_ui.hide_all()
-      questions.q2.question_ui.hide_all()
-      questions.q3.question_ui.hide_all()
-      questions.q4.question_ui.hide_all()
-      questions.q5.question_ui.hide_all()
-      questions.q6.question_ui.hide_all()
+    questions.question_ui.hide_all()
+
 
 
   elif keys[pygame.K_ESCAPE]:
