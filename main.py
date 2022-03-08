@@ -24,6 +24,7 @@ win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 # Popup GUI
 popup = Popup(WIN_WIDTH, WIN_HEIGHT)
 questions = Questions(popup, WIN_WIDTH, WIN_HEIGHT)
+popup_open = False
 
 # Map Tiling
 sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
@@ -49,6 +50,7 @@ def redrawGameWindow():
     spy.draw(win)
     popup.manager.draw_ui(win)
     
+    
     pygame.display.update()
 
 spy = Player(304, 550, 64, 64)
@@ -61,6 +63,9 @@ while run:
   for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
     if event.type == pygame.QUIT:   #Checks if the red button in the corner of the window is clicked
       run=False   #Ends the game loop
+
+    # if event.type == questions.question_textbox.
+    #   questions.question_textbox.hide()
 
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
       for button in questions.answer_buttons:    

@@ -14,7 +14,9 @@ class Questions():
   def __init__(self, popup, win_width, win_height):
     question_bank = Question_bank()
     Question_setup(question_bank)
+
     anagram = Anagram()
+    anagram_ui = Anagram_Textbox(popup.manager)
 
     self.question_ui = Question_ui(popup.manager, win_width, win_height)
     self.q1 = Question(popup.manager, 1, win_width, win_height, question_bank)

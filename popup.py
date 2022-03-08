@@ -31,10 +31,19 @@ class Textbox():
                         relative_rect=pygame.Rect(left_padding, top_padding, width, height),
                         html_text=f'{html_text}',
                         manager=manager,
-                        container=container)        
+                        container=container)    
 
   def text_effect_typing_appear(self):
     self.element.set_active_effect(pygame_gui.TEXT_EFFECT_TYPING_APPEAR, params = {'time_per_letter': .01})
+
+class Anagram_Textbox():
+  def __init__(self, manager):
+    self.element = pygame_gui.elements.UITextBox(
+                        relative_rect=pygame.Rect(262, 20, 152, 30),
+                        html_text='<b>P  Y  T  H  O  N</b>',
+                        manager=manager) 
+
+    pygame_gui.core.TextBoxLayout.horiz_center_all_rows
 
 class Question_ui():
   def __init__(self, manager, win_width, win_height):
@@ -142,6 +151,8 @@ class Question_ui():
   def write_all(self):
     self.write_buttons()
     self.write_question()
+
+   
 
   
     
