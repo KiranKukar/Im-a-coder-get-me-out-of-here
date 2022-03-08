@@ -45,15 +45,10 @@ class Textbox():
   def __init__(self, left_padding, top_padding, width, height, html_text, manager, container):
     self.element = pygame_gui.elements.UITextBox(
                         relative_rect=pygame.Rect(left_padding, top_padding, width, height),
-                        html_text=f'{html_text}',
+                        html_text=f'<font color=#03A062><b>{html_text}</b></font>',
                         manager=manager,
                         container=container)        
 
   def text_effect_typing_appear(self):
     self.element.set_active_effect(pygame_gui.TEXT_EFFECT_TYPING_APPEAR, params = {'time_per_letter': .01})
-
-
-                      
-          
-
 
