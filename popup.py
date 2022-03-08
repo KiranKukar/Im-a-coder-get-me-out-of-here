@@ -10,7 +10,6 @@ class Popup():
     def question_ui(self, question):
       Question_ui(self.manager, question, self.win_width, self.win_height)
 
-
 class Window():
   def __init__(self, left_padding, top_padding, width, height, display_title, manager):
       self.element = pygame_gui.elements.UIWindow(
@@ -108,16 +107,19 @@ class Question_ui():
 
   def answered_correctly(self):
     self.disable_all()
+    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><i>Correct!</i>')
+    self.rewrite_question()
 
   def answered_incorrectly(self):
     self.disable_all()
+    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FF0000><i>Wrong!</i>')
+    self.rewrite_question()
 
   def disable_all(self):
     self.answer_button_1.element.disable()
     self.answer_button_2.element.disable()
     self.answer_button_3.element.disable()
     self.answer_button_4.element.disable()
-
 
   def enable_all(self):
     self.answer_button_1.element.enable()
@@ -133,10 +135,15 @@ class Question_ui():
 
   def write_question(self):
     self.question_textbox.element.set_text(f'<font color=#03A062><b>{self.question_info.question}</b></font>')
+  
+  def rewrite_question(self):
+    self.question_textbox.element.set_text(f'{self.question_info.question}')
 
   def write_all(self):
     self.write_buttons()
     self.write_question()
+
+  
     
    
 
@@ -154,3 +161,5 @@ class Question_ui():
           
 
 
+# questions.question_textbox.append_html_text(f'<br><br><i>Correct!</i>')
+# questions.question_textbox.append_html_text(f'<br><br><i><font color=#FF0000>Wrong!</font></i>')

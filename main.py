@@ -40,7 +40,6 @@ clock = pygame.time.Clock()   #Used to manage how fast the screen updates
 
 # Timer for Popup Manager GUI
 time_delta = clock.tick(60)/1000.0
-draw_ui = False
 
 def redrawGameWindow():
     # global walkCount
@@ -48,9 +47,7 @@ def redrawGameWindow():
     # win.blit(map, (0,0))   #This will draw our background image at (0,0)
                           #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
     spy.draw(win)
-
-    if draw_ui == True:  
-      popup.manager.draw_ui(win) 
+    popup.manager.draw_ui(win)
     
     pygame.display.update()
 
@@ -66,52 +63,13 @@ while run:
       run=False   #Ends the game loop
 
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
-      if event.ui_element == questions.answer_button_1:
-        if questions.answer_button_1.text == questions.loaded_question_info.correct_answer:
-          questions.question_textbox.append_html_text(f'<br><br><i>Correct!</i>')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-        else:
-          questions.question_textbox.append_html_text(f'<br><br><i><font color=#FF0000>Wrong!</font></i>')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-      if event.ui_element == questions.answer_button_2:
-        if questions.answer_button_2.text == questions.loaded_question_info.correct_answer:
-          questions.question_textbox.set_text(questions.loaded_question_info.question + 'Correct!')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-        else:
-          questions.question_textbox.set_text('wrong!')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-      if event.ui_element == questions.answer_button_3:
-        if questions.answer_button_3.text == questions.loaded_question_info.correct_answer:
-          questions.question_textbox.set_text(questions.loaded_question_info.question + 'Correct!')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-        else:
-          questions.question_textbox.set_text('wrong!')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-      if event.ui_element == questions.answer_button_4:
-        if questions.answer_button_4.text == questions.loaded_question_info.correct_answer:
-          questions.question_textbox.set_text(questions.q1.question_info.question + 'Correct!')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-        else:
-          questions.question_textbox.set_text('wrong!')
-          redrawGameWindow()
-          time.sleep(3)
-          draw_ui  = False
-
-
+      for button in questions.answer_buttons:    
+        if event.ui_element == button:
+          if button.text == questions.loaded_question_info.correct_answer:
+            questions.question_answered('correctly')
+          else:
+            questions.question_answered('incorrectly')
+          popup_open = False
 
   popup.manager.process_events(event)
   popup.manager.update(time_delta)
@@ -120,11 +78,12 @@ while run:
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
-  if keys[pygame.K_LEFT] and draw_ui == False:   #vel changes speed of movement
+  if keys[pygame.K_LEFT] and popup_open == False:   #vel changes speed of movement
         spy.x -= spy.vel
         spy.left = True
         spy.right = False
-  elif keys[pygame.K_RIGHT] and draw_ui == False:
+        questions.question_ui.hide_all()
+  elif keys[pygame.K_RIGHT] and popup_open == False:
         #character not allowed to move off right of screen
         #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
         #width is the width of the character
@@ -132,23 +91,28 @@ while run:
         spy.x += spy.vel
         spy.right = True
         spy.left = False
-  elif keys[pygame.K_UP] and draw_ui == False:
+        questions.question_ui.hide_all()
+  elif keys[pygame.K_UP] and popup_open == False:
         spy.y -= spy.vel
         spy.right = True
         spy.left = False
-  elif keys[pygame.K_DOWN] and draw_ui == False:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+        questions.question_ui.hide_all()
+  elif keys[pygame.K_DOWN] and popup_open == False:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
         spy.y += spy.vel
         spy.right = True
         spy.left = False
+        questions.question_ui.hide_all()
   elif keys[pygame.K_a]:
-        draw_ui = True
+        print('pressed a')
   elif keys[pygame.K_b]:
-        draw_ui = False
+        print('pressed b')
 
   elif keys[pygame.K_1]:
     questions.load_question(questions.q1.question_info)
+    popup_open = True
   elif keys[pygame.K_2]:
     questions.question_ui.hide_all()
+    popup_open = False
 
 
 
