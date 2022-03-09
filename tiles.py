@@ -34,6 +34,8 @@ class TileMap():
     self.laptop5 = pygame.sprite.Group()
     self.laptop6 = pygame.sprite.Group()
     self.exit_door = pygame.sprite.Group()
+    
+    
 
     # starting coordinates of player sprite
     self.start_x, self.start_y = 0, 0 
@@ -62,6 +64,7 @@ class TileMap():
       for row in data:
         map.append(list(row))
     return map
+
 
   # loads tiles
   def load_tiles(self, filename):
@@ -95,6 +98,7 @@ class TileMap():
             self.laptop6.add(tile_item)
           elif tile == '148':
             self.exit_door.add(tile_item)
+            self.door_tile = tile_item
           else:
             self.tile_group.add(tile_item)
         # Move to next tile in current row
@@ -106,5 +110,19 @@ class TileMap():
     self.map_w, self.map_h = x * self.tile_size * self.scale, y * self.tile_size * self.scale
     return tiles
 
-    # frame_0 = self.sprite_sheet.get_image(tile, self.tile_size, self.tile_size, self.scale)
+  def open_door(self, win):
+    self.get_door_tiles()
+    # self.door_tile stores the tile where the door is
+    # can we just change it's image??
+
+  def get_door_tiles(self):
+    # images of the door opening from 5(closed) - 1(open)
+     self.door5 = self.sprite_sheet.get_image(148, self.tile_size, self.tile_size, self.scale)
+     self.door4 = self.sprite_sheet.get_image(147, self.tile_size, self.tile_size, self.scale)
+     self.door3 = self.sprite_sheet.get_image(146, self.tile_size, self.tile_size, self.scale)
+     self.door2 = self.sprite_sheet.get_image(145, self.tile_size, self.tile_size, self.scale)
+     self.door1 = self.sprite_sheet.get_image(144, self.tile_size, self.tile_size, self.scale)
+
+     
+
 

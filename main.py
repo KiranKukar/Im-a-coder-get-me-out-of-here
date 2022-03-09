@@ -34,7 +34,6 @@ sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 map = TileMap('map21x21.csv', sprite_sheet, SCALE)
 
 
-
 clock = pygame.time.Clock()   #Used to manage how fast the screen updates
 
 # Timer for Popup Manager GUI
