@@ -81,50 +81,60 @@ class Player(pygame.sprite.Sprite):
             self.walkCount +=1
 
 
+def laptopCollision():
+    print('laptop collision. Time for a question!')
 
 def update(spy, keys):
   global canCollide, blocked
-  if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
-      if keys[pygame.K_UP]:
-        blocked = 'up'
-      if keys[pygame.K_DOWN]:
-        blocked = 'down'
-      if keys[pygame.K_LEFT]:
-        blocked = 'left'
-      if keys[pygame.K_RIGHT]:
-        blocked = 'right'
-      canCollide = False
+  if pygame.sprite.spritecollideany(spy, map.laptop_group): # and keypress A
+    laptopCollision()
   else:
-    canCollide = True
-    if keys[pygame.K_LEFT] and not blocked == 'left': # and not left blast collide/disabled
-    #vel changes speed of movement
-            spy.rect.move_ip(-spy.vel, 0)
-            spy.left = True
-            spy.right = False
-    elif keys[pygame.K_RIGHT] and not blocked == 'right':
-            #character not allowed to move off right of screen
-            #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
-            #width is the width of the character
-            #the position of the character will not be allowed to move past the border now set the width of the character from the edge
-            spy.rect.move_ip(spy.vel, 0)
-            spy.right = True
-            spy.left = False
-
-    elif keys[pygame.K_UP] and not blocked == 'up':
-            spy.rect.move_ip(0, -spy.vel)
-            spy.right = True
-            spy.left = False
-    elif keys[pygame.K_DOWN] and not blocked == 'down':   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+    if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
+        if keys[pygame.K_UP]:
+            blocked = 'up'
             spy.rect.move_ip(0, spy.vel)
-            spy.right = True
-            spy.left = False
-
+        if keys[pygame.K_DOWN]:
+            blocked = 'down'
+            spy.rect.move_ip(0, -spy.vel)
+        if keys[pygame.K_LEFT]:
+            blocked = 'left'
+            spy.rect.move_ip(spy.vel, 0)
+        if keys[pygame.K_RIGHT]:
+            blocked = 'right'
+            spy.rect.move_ip(-spy.vel, 0)
+        canCollide = False
     else:
-            spy.right = False
-            spy.left = False
-            # spy.walkCount = 0
-    blocked = ''
-  print(f'rect aft move {spy.rect}')
+        canCollide = True
+        print(blocked)
+        if keys[pygame.K_LEFT] and not blocked == 'left': # and not left blast collide/disabled
+        #vel changes speed of movement
+                spy.rect.move_ip(-spy.vel, 0)
+                spy.left = True
+                spy.right = False
+        elif keys[pygame.K_RIGHT] and not blocked == 'right':
+                #character not allowed to move off right of screen
+                #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
+                #width is the width of the character
+                #the position of the character will not be allowed to move past the border now set the width of the character from the edge
+                spy.rect.move_ip(spy.vel, 0)
+                spy.right = True
+                spy.left = False
+
+        elif keys[pygame.K_UP] and not blocked == 'up':
+                spy.rect.move_ip(0, -spy.vel)
+                spy.right = True
+                spy.left = False
+        elif keys[pygame.K_DOWN] and not blocked == 'down':   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+                spy.rect.move_ip(0, spy.vel)
+                spy.right = True
+                spy.left = False
+
+        else:
+                spy.right = False
+                spy.left = False
+                # spy.walkCount = 0
+        blocked = ''
+    
 
 def redrawGameWindow():
     # global walkCount
