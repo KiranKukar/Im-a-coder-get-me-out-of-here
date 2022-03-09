@@ -39,8 +39,8 @@ class Textbox():
 class Anagram_Textbox():
   def __init__(self, manager):
     self.element = pygame_gui.elements.UITextBox(
-                        relative_rect=pygame.Rect(262, 20, 152, 30),
-                        html_text='<b>P  Y  T  H  O  N</b>',
+                        relative_rect=pygame.Rect(256, 20, 158, 30),
+                        html_text='<b> P  _  T  _  O  N</b>',
                         manager=manager) 
 
     pygame_gui.core.TextBoxLayout.horiz_center_all_rows

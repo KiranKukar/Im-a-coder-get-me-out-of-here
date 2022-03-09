@@ -20,6 +20,7 @@ WIN_WIDTH = 336 * SCALE
 WIN_HEIGHT = 336 * SCALE
 BG = (185, 237, 214)
 win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
 # Popup GUI
 popup = Popup(WIN_WIDTH, WIN_HEIGHT)
@@ -118,8 +119,6 @@ while run:
   elif keys[pygame.K_2]:
     questions.question_ui.hide_all()
     popup_open = False
-
-
 
   elif keys[pygame.K_ESCAPE]:
         break
