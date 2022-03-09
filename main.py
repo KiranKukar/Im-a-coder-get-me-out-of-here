@@ -115,7 +115,9 @@ while run:
 
   elif keys[pygame.K_1]:
     questions.load_question(questions.q1.question_info)
-    popup_open = True
+    if questions.q1.question_info.answered == "no":
+      popup_open = True
+    
   elif keys[pygame.K_2]:
     questions.question_ui.hide_all()
     popup_open = False

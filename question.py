@@ -5,7 +5,6 @@ from anagram import *
 class Question():
   def __init__(self, manager, number, win_width, win_height, question_bank):
     self.number = number
-    self.status = 'unanswered'
 
     self.question_bank = question_bank
     self.question_info = question_bank.list[number]

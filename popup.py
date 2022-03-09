@@ -43,7 +43,7 @@ class Anagram_Textbox():
                         html_text='<b> P  _  T  _  O  N</b>',
                         manager=manager) 
 
-    pygame_gui.core.TextBoxLayout.horiz_center_all_rows
+    # pygame_gui.core.TextBoxLayout.horiz_center_all_rows
 
 class Question_ui():
   def __init__(self, manager, win_width, win_height):
@@ -117,11 +117,13 @@ class Question_ui():
   def answered_correctly(self):
     self.disable_all()
     self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><i>Correct!</i>')
+    self.question_info.answered = "Correctly"
     self.rewrite_question()
 
   def answered_incorrectly(self):
     self.disable_all()
     self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FF0000><i>Wrong!</i>')
+    self.question_info.answered = "Correctly"
     self.rewrite_question()
 
   def disable_all(self):

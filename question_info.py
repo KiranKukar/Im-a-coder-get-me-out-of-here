@@ -6,6 +6,7 @@ class Question_bank():
 
 class Question_info():
   def __init__(self, id, question, correct_answer, incorrect_answers):
+    self.answered = 'no'
     self.id = id
     self.question = question
     self.correct_answer = correct_answer
