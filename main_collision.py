@@ -32,7 +32,7 @@ idle = [pygame.image.load('./img/idle_0.png'), pygame.image.load('./img/idle_1.p
 
 clock = pygame.time.Clock()
 
-class player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):
     def __init__(self,x,y,width,height):
       pygame.sprite.Sprite.__init__(self)
         #starting position of sprite
@@ -49,11 +49,9 @@ class player(pygame.sprite.Sprite):
       self.walkCount = 0
       self.isJump = False
       self.jumpCount = 5
-      self.rect = player_img.get_rect()
-     
-
-
-    
+      self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+      
+   
 
 # x=300
 # y=300
@@ -87,16 +85,16 @@ class player(pygame.sprite.Sprite):
             self.walkCount +=1
 
 def redrawGameWindow():
-    # global walkCount
-    map.draw_map(win)
-    # win.blit(map, (0,0))   #This will draw our background image at (0,0)
-                          #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
-    # spy.rect, collision_types = move(player_rect, player_movement, map.tiles_rects)
+  win.fill(BG)
+  # global walkCount
+  map.draw_map(win)
+  # win.blit(map, (0,0))   #This will draw our background image at (0,0)
+                        #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
+  # spy.rect, collisions = move(player_rect, player_movement, map.tiles_rects)
 
-    spy.draw(win)
-
-    
-    pygame.display.update()
+  spy.draw(win)
+  
+  pygame.display.update()
 
 
 
@@ -115,40 +113,31 @@ def move(rect, movement, tile): #rect of player, movement of player, put tile - 
   hit_list = collision_test(rect, tile)
   for hit_tile in hit_list:
     tile_rect = Rect(hit_tile)
-    print(hit_tile)
-    print(f'hit_list {hit_list}')
-    if movement[0] <= tile_rect.left:
-      print(spy.left)
-      print(tile_rect.left)
-      spy.x = tile_rect.left
+    if movement[0] > 0:
+      rect.right = tile_rect.left
       collision_types['right'] = True
-      # print(collision_types['right'], hit_tile)
-
-    if movement[0] <= tile_rect.right:
-      spy.x = tile_rect.right
+    elif movement[0] < 0:
+      rect.left = tile_rect.right
       collision_types['left'] = True
-      # print(collision_types['left'], hit_tile)
   rect.y += movement[1]
   hit_list = collision_test(rect, tile)
   for hit_tile in hit_list:
     tile_rect = Rect(hit_tile)
-    if movement[1] >= tile_rect.top:
-      spy.y = tile_rect.top - spy.height
+    if movement[1] > 0:
+      rect.bottom = tile.top
       collision_types['bottom'] = True
-      # print(collision_types['bottom'], hit_tile)
-
-    if movement[1] <= tile_rect.bottom:
-      spy.y = tile_rect.bottom
+    elif movement[1] < 0:
+      rect.top = tile.bottom
       collision_types['top'] = True
-      # print(collision_types['top'], hit_tile)
   return rect, collision_types
 
 #mainloop
-spy = player(300, 410, 64,64)
+spy = Player(300, 410, 64,64)
 run = True
+spy.draw(win)
 
 while run:
-  win.fill(BG)
+  
 #   clock.tick(27)
 #   #pygame.time.delay(100)   #This will delay the game the given amount of milliseconds. In our casee 0.1 seconds will be the delay
 #   #check for event
@@ -159,47 +148,48 @@ while run:
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
-  player_movement = [spy.x, spy.y]
-  player_rect = spy.rect
-  spy.rect, collision_types = move(player_rect, player_movement, map.tiles_rects)
 
-  if keys[pygame.K_LEFT] and collision_types['left'] == False:   #vel changes speed of movement
-        spy.x -= spy.vel # sets locatioin of spy - and does the same below
+  if keys[pygame.K_LEFT]:   #vel changes speed of movement
+        
         spy.left = True
         spy.right = False
         
 
-  elif keys[pygame.K_RIGHT] and collision_types['right'] == False:
+  elif keys[pygame.K_RIGHT]:
         #character not allowed to move off right of screen
         #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
         #width is the width of the character
         #the position of the character will not be allowed to move past the border now set the width of the character from the edge
-        spy.x += spy.vel
         
         spy.right = True
         spy.left = False
         
 
-  elif keys[pygame.K_UP] and collision_types['top'] == False:
-        spy.y -= spy.vel
+  elif keys[pygame.K_UP]:
         
-        spy.right = True
-        spy.left = False
-       
+        spy.up = True
+        spy.down = False
+        
 
-  elif keys[pygame.K_DOWN] and collision_types['bottom'] == False:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
-        spy.y += spy.vel
-        
-        spy.right = True
-        spy.left = False
+  elif keys[pygame.K_DOWN]:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+      
+        spy.down = True
+        spy.up = False
 
   else:
         spy.right = False
         spy.left = False
         spy.up = False
         spy.down = False
+        spy.walkCount = 0
+  
   
 
+  # player_movement = [spy.x, spy.y]
+  # player_rect = spy.rect
+
+  
+        
   if not(spy.isJump):
         if keys[pygame.K_SPACE]:
             spy.isJump = True
@@ -221,7 +211,8 @@ while run:
 
 #   #pygame.draw.rect(win, (255, 0, 0), (x, y, width, height))   #This takes: window/surface, color, rect
 #   #pygame.display.update()   #This updates the screen so we can see our rectangle
-            
+  
+
   redrawGameWindow()
 
 pygame.quit()   #If we exit the loop this will execute and close our game
