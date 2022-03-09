@@ -39,7 +39,7 @@ class Textbox():
 class Anagram_Textbox():
   def __init__(self, manager, html_text):
     self.element = pygame_gui.elements.UITextBox(
-                        relative_rect=pygame.Rect(206, 20, 257, 35),
+                        relative_rect=pygame.Rect(206, 20, 257, 40),
                         html_text=f'{html_text}',
                         manager=manager) 
 
@@ -47,16 +47,15 @@ class Anagram_Textbox():
 class Passcode_Textbox():
   def __init__(self, manager):
     self.element = pygame_gui.elements.UITextEntryLine(
-                        relative_rect=pygame.Rect(298, 135, 70, 40),
+                        relative_rect=pygame.Rect(275, 130, 124, 40),
                         manager=manager)
 
-    # self.test_text_entry = UITextEntryLine(pygame.Rect((int(self.options.resolution[0] / 2),
-    #                                                         int(self.options.resolution[1] * 0.50)),
-    #                                                        (200, -1)),
-    #                                            self.ui_manager,
+    # self.element = pygame_gui.elements.UITextEntryLine(pygame.Rect((275, 127),
+    #                                                        (124, -1)),
+    #                                            manager=manager,
     #                                            object_id='#main_text_entry')
-    #     #self.test_text_entry.set_text_length_limit(3)
-    #     self.test_text_entry.set_text('hello hello hello hello hello hello')
+    # self.element.set_text_length_limit(6)
+    self.element.set_text('ENTER PASSCODE')
 
 class Question_ui():
   def __init__(self, manager, win_width, win_height):

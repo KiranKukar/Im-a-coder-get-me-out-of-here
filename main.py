@@ -40,6 +40,12 @@ player_rect.x, player_rect.y = map.start_x, map.start_y
 
 clock = pygame.time.Clock()   #Used to manage how fast the screen updates
 
+music = pygame.mixer.music.load('./sounds/MissionImpossibleTheme.mp3')
+pygame.mixer.music.play(-1)
+
+# question_sound = pygame.mixer.Sound('./sounds/mixkit-game-level-music-689.wav')
+# question_sound.play()   #add this after the action you want it to play
+
 # Timer for Popup Manager GUI
 time_delta = clock.tick(60)/1000.0
 
