@@ -67,7 +67,6 @@ def update(spy, keys):
         canCollide = False
     else:
         canCollide = True
-        print(blocked)
         if keys[pygame.K_LEFT] and not blocked == 'left': 
                 spy.rect.move_ip(-spy.vel, 0)
                 spy.left = True
@@ -131,55 +130,56 @@ while run:
   popup.manager.process_events(event)
   popup.manager.update(time_delta)
   
-  
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
+  
+  update(spy, keys)
 
-  if keys[pygame.K_LEFT] and popup_open == False:   #vel changes speed of movement
-        spy.x -= spy.vel
-        spy.left = True
-        spy.right = False
-        questions.question_ui.hide_all()
-  elif keys[pygame.K_RIGHT] and popup_open == False:
-        #character not allowed to move off right of screen
-        #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
-        #width is the width of the character
-        #the position of the character will not be allowed to move past the border now set the width of the character from the edge
-        spy.x += spy.vel
-        spy.right = True
-        spy.left = False
-        questions.question_ui.hide_all()
-  elif keys[pygame.K_UP] and popup_open == False:
-        spy.y -= spy.vel
-        spy.right = True
-        spy.left = False
-        questions.question_ui.hide_all()
-  elif keys[pygame.K_DOWN] and popup_open == False:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
-        spy.y += spy.vel
-        spy.right = True
-        spy.left = False
-        questions.question_ui.hide_all()
-  elif keys[pygame.K_a]:
-        print('pressed a')
-  elif keys[pygame.K_b]:
-        print('pressed b')
+#   if keys[pygame.K_LEFT] and popup_open == False:   #vel changes speed of movement
+#         spy.x -= spy.vel
+#         spy.left = True
+#         spy.right = False
+#         questions.question_ui.hide_all()
+#   elif keys[pygame.K_RIGHT] and popup_open == False:
+#         #character not allowed to move off right of screen
+#         #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
+#         #width is the width of the character
+#         #the position of the character will not be allowed to move past the border now set the width of the character from the edge
+#         spy.x += spy.vel
+#         spy.right = True
+#         spy.left = False
+#         questions.question_ui.hide_all()
+#   elif keys[pygame.K_UP] and popup_open == False:
+#         spy.y -= spy.vel
+#         spy.right = True
+#         spy.left = False
+#         questions.question_ui.hide_all()
+#   elif keys[pygame.K_DOWN] and popup_open == False:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+#         spy.y += spy.vel
+#         spy.right = True
+#         spy.left = False
+#         questions.question_ui.hide_all()
+#   elif keys[pygame.K_a]:
+#         print('pressed a')
+#   elif keys[pygame.K_b]:
+#         print('pressed b')
 
-  elif keys[pygame.K_1]:
-    questions.load_question(questions.q1.question_info)
-    if questions.q1.question_info.answered == "no":
-      popup_open = True
+#   elif keys[pygame.K_1]:
+#     questions.load_question(questions.q1.question_info)
+#     if questions.q1.question_info.answered == "no":
+#       popup_open = True
     
-  elif keys[pygame.K_2]:
-    questions.question_ui.hide_all()
-    popup_open = False
+#   elif keys[pygame.K_2]:
+#     questions.question_ui.hide_all()
+#     popup_open = False
 
-  elif keys[pygame.K_ESCAPE]:
-        break
-  else:
-        spy.right = False
-        spy.left = False
+#   elif keys[pygame.K_ESCAPE]:
+#         break
+#   else:
+#         spy.right = False
+#         spy.left = False
 
-  update(spy,keys)
+  
 
   if not(spy.isJump):
         if keys[pygame.K_SPACE]:

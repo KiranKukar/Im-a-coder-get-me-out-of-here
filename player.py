@@ -28,17 +28,17 @@ class Player(pygame.sprite.Sprite):
         if self.walkCount + 1 >= 27:
             self.walkCount = 0
         if self.left:
-            win.blit(self.walkLeft[self.walkCount//6], (self.x,self.y))
+            win.blit(self.walkLeft[self.walkCount//6], (self.rect.x,self.rect.y))
             self.walkCount += 1
         elif self.right:
-            win.blit(self.walkRight[self.walkCount//6], (self.x,self.y))
+            win.blit(self.walkRight[self.walkCount//6], (self.rect.x,self.rect.y))
             self.walkCount +=1
         elif self.up:
-            win.blit(self.walkRight[self.walkCount//6], (self.x,self.y))
+            win.blit(self.walkRight[self.walkCount//6], (self.rect.x,self.rect.y))
             self.walkCount +=1
         elif self.down:
-            win.blit(self.walkRight[self.walkCount//6], (self.x,self.y))
+            win.blit(self.walkRight[self.walkCount//6], (self.rect.x,self.rect.y))
             self.walkCount +=1
         else:
-            win.blit(self.idle[self.walkCount//20], (self.x,self.y))
+            win.blit(self.idle[self.walkCount//20], (self.rect.x,self.rect.y))
             self.walkCount +=1
