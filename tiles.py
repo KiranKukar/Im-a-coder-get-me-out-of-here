@@ -27,6 +27,13 @@ class TileMap():
     self.sprite_sheet = sprite_sheet
     self.tile_group = pygame.sprite.Group()
     self.laptop_group = pygame.sprite.Group()
+    self.laptop1 = pygame.sprite.Group()
+    self.laptop2 = pygame.sprite.Group()
+    self.laptop3 = pygame.sprite.Group()
+    self.laptop4 = pygame.sprite.Group()
+    self.laptop5 = pygame.sprite.Group()
+    self.laptop6 = pygame.sprite.Group()
+    self.exit_door = pygame.sprite.Group()
 
     # starting coordinates of player sprite
     self.start_x, self.start_y = 0, 0 
@@ -68,10 +75,28 @@ class TileMap():
           image = self.sprite_sheet.get_image(int(tile), self.tile_size, self.tile_size, self.scale)
           tile_item = Tile(image, x * self.tile_size * self.scale, y * self.tile_size * self.scale)
           tiles.append(tile_item)
-          if tile != '158':
-            self.tile_group.add(tile_item)
-          else:
+          if tile == '158':
             self.laptop_group.add(tile_item)
+            self.laptop1.add(tile_item)
+          elif tile == '157':
+            self.laptop_group.add(tile_item)
+            self.laptop2.add(tile_item)
+          elif tile == '153':
+            self.laptop_group.add(tile_item)
+            self.laptop3.add(tile_item)
+          elif tile == '154':
+            self.laptop_group.add(tile_item)
+            self.laptop4.add(tile_item)
+          elif tile == '161':
+            self.laptop_group.add(tile_item)
+            self.laptop5.add(tile_item)
+          elif tile == '162':
+            self.laptop_group.add(tile_item)
+            self.laptop6.add(tile_item)
+          elif tile == '148':
+            self.exit_door.add(tile_item)
+          else:
+            self.tile_group.add(tile_item)
         # Move to next tile in current row
         x +=1
       # Move to next row  

@@ -44,7 +44,24 @@ time_delta = clock.tick(60)/1000.0
 
 
 def laptopCollision():
-    print('laptop collision. Time for a question!')
+  if pygame.sprite.spritecollideany(spy, map.laptop1):
+    print('laptop 1 collision')
+    # set up a question
+  if pygame.sprite.spritecollideany(spy, map.laptop2):
+    print('laptop 2 collision')
+    # set up a question
+  if pygame.sprite.spritecollideany(spy, map.laptop3):
+    print('laptop 3 collision')
+    # set up a question
+  if pygame.sprite.spritecollideany(spy, map.laptop4):
+    print('laptop 4 collision')
+    # set up a question
+  if pygame.sprite.spritecollideany(spy, map.laptop5):
+    print('laptop 5 collision')
+    # set up a question
+  if pygame.sprite.spritecollideany(spy, map.laptop6):
+    print('laptop 6 collision')
+    # set up a question
 
 def update(spy, keys):
   global canCollide, blocked
