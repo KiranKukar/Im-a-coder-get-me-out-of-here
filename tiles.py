@@ -26,6 +26,7 @@ class TileMap():
     self.scale = scale
     self.sprite_sheet = sprite_sheet
     self.tile_group = pygame.sprite.Group()
+    self.laptop_group = pygame.sprite.Group()
 
     # starting coordinates of player sprite
     self.start_x, self.start_y = 0, 0 
@@ -67,7 +68,10 @@ class TileMap():
           image = self.sprite_sheet.get_image(int(tile), self.tile_size, self.tile_size, self.scale)
           tile_item = Tile(image, x * self.tile_size * self.scale, y * self.tile_size * self.scale)
           tiles.append(tile_item)
-          self.tile_group.add(tile_item)
+          if tile != '158':
+            self.tile_group.add(tile_item)
+          else:
+            self.laptop_group.add(tile_item)
         # Move to next tile in current row
         x +=1
       # Move to next row  

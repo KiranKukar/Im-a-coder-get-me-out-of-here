@@ -4,8 +4,10 @@ from tiles import *
 import spriteSheet
 pygame.init()
 
-player_img = pygame.image.load('./img/run_0.png')
-player_rect = player_img.get_rect()
+
+
+# player_img = pygame.image.load('./img/run_0.png')
+# player_rect = player_img.get_rect()
 
 SCALE = 2
 BG = (185, 237, 214)
@@ -17,7 +19,7 @@ sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
 sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 
 map = TileMap('map21x21.csv', sprite_sheet, SCALE)
-player_rect.x, player_rect.y = map.start_x, map.start_y
+# player_rect.x, player_rect.y = map.start_x, map.start_y
 
 char = pygame.image.load('./img/idle_0.png')
 walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
@@ -46,7 +48,9 @@ class Player(pygame.sprite.Sprite):
         self.walkCount = 0
         self.isJump = False
         self.jumpCount = 5
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.rect = pygame.Rect(self.x, self.y, 26, 30)
+        self.rect = self.rect.inflate(40, 40)
+        
 
 
 # x=300
@@ -76,16 +80,28 @@ class Player(pygame.sprite.Sprite):
             win.blit(idle[self.walkCount//20], (self.rect.x,self.rect.y))
             self.walkCount +=1
 
+
+
 def update(spy, keys):
-  if pygame.sprite.spritecollideany(spy, map.tile_group):
-        pass
+  global canCollide, blocked
+  if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
+      if keys[pygame.K_UP]:
+        blocked = 'up'
+      if keys[pygame.K_DOWN]:
+        blocked = 'down'
+      if keys[pygame.K_LEFT]:
+        blocked = 'left'
+      if keys[pygame.K_RIGHT]:
+        blocked = 'right'
+      canCollide = False
   else:
-    if keys[pygame.K_LEFT]: 
+    canCollide = True
+    if keys[pygame.K_LEFT] and not blocked == 'left': # and not left blast collide/disabled
     #vel changes speed of movement
             spy.rect.move_ip(-spy.vel, 0)
             spy.left = True
             spy.right = False
-    elif keys[pygame.K_RIGHT]:
+    elif keys[pygame.K_RIGHT] and not blocked == 'right':
             #character not allowed to move off right of screen
             #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
             #width is the width of the character
@@ -94,11 +110,11 @@ def update(spy, keys):
             spy.right = True
             spy.left = False
 
-    elif keys[pygame.K_UP]:
+    elif keys[pygame.K_UP] and not blocked == 'up':
             spy.rect.move_ip(0, -spy.vel)
             spy.right = True
             spy.left = False
-    elif keys[pygame.K_DOWN]:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+    elif keys[pygame.K_DOWN] and not blocked == 'down':   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
             spy.rect.move_ip(0, spy.vel)
             spy.right = True
             spy.left = False
@@ -107,6 +123,8 @@ def update(spy, keys):
             spy.right = False
             spy.left = False
             # spy.walkCount = 0
+    blocked = ''
+  print(f'rect aft move {spy.rect}')
 
 def redrawGameWindow():
     # global walkCount
@@ -118,7 +136,10 @@ def redrawGameWindow():
     pygame.display.update()
 
 #mainloop
-spy = Player(300, 410, 64,64)
+spy = Player(250, 350, 64, 64)
+
+canCollide = True
+blocked = ''
 run = True
 while run:
   win.fill(BG)
@@ -130,7 +151,7 @@ while run:
 #       #if you hit big red button in corner to close window, then game will end also
       run=False   #Ends the game loop
 
-  collision = False
+  
   spy.right = False
   spy.left = False
 
@@ -155,7 +176,7 @@ while run:
             spy.isJump = False
             spy.jumpCount = 5
 
-  collision = False
+
   
   #this will fill the background with black so you don't see a trail of red rectangles
 
