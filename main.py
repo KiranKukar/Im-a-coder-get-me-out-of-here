@@ -69,6 +69,7 @@ while run:
     #   questions.question_textbox.hide()
 
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
+      popup_open = False
       for button in questions.answer_buttons:    
         if event.ui_element == button:
           if button.text == questions.loaded_question_info.correct_answer:
@@ -77,10 +78,8 @@ while run:
             questions.question_answered('incorrectly')
           popup_open = False
 
-  popup.manager.process_events(event)
+    popup.manager.process_events(event)
   popup.manager.update(time_delta)
-  
-  
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
@@ -117,8 +116,28 @@ while run:
     questions.load_question(questions.q1.question_info)
     if questions.q1.question_info.answered == "no":
       popup_open = True
-    
   elif keys[pygame.K_2]:
+    questions.load_question(questions.q2.question_info)
+    if questions.q2.question_info.answered == "no":
+      popup_open = True
+  elif keys[pygame.K_3]:
+    questions.load_question(questions.q3.question_info)
+    if questions.q3.question_info.answered == "no":
+      popup_open = True
+  elif keys[pygame.K_4]:
+    questions.load_question(questions.q4.question_info)
+    if questions.q4.question_info.answered == "no":
+      popup_open = True
+  elif keys[pygame.K_5]:
+    questions.load_question(questions.q5.question_info)
+    if questions.q5.question_info.answered == "no":
+      popup_open = True
+  elif keys[pygame.K_6]:
+    questions.load_question(questions.q6.question_info)
+    if questions.q6.question_info.answered == "no":
+      popup_open = True
+
+  elif keys[pygame.K_0]:
     questions.question_ui.hide_all()
     popup_open = False
 

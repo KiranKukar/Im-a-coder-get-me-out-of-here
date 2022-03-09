@@ -14,8 +14,11 @@ class Questions():
     question_bank = Question_bank()
     Question_setup(question_bank)
 
-    anagram = Anagram()
-    anagram_ui = Anagram_Textbox(popup.manager)
+    self.anagram = Anagram()
+    self.anagram.select_anagram()
+    self.anagram.randomise_anagram()
+
+    self.anagram_ui = Anagram_Textbox(popup.manager, self.anagram.letters)
 
     self.question_ui = Question_ui(popup.manager, win_width, win_height)
     self.q1 = Question(popup.manager, 1, win_width, win_height, question_bank)
@@ -41,5 +44,9 @@ class Questions():
   def question_answered(self, status):
     if status == 'correctly':
       self.question_ui.answered_correctly()
+      self.anagram.add_letter()
+      self.anagram_ui.element.set_text(f'{self.anagram.letters}')
     elif status == 'incorrectly':
       self.question_ui.answered_incorrectly()
+      self.anagram.add_qmark()
+      self.anagram_ui.element.set_text(f'{self.anagram.letters}')
