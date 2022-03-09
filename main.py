@@ -64,7 +64,7 @@ while run:
   for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
     if event.type == pygame.QUIT:   #Checks if the red button in the corner of the window is clicked
       run=False   #Ends the game loop
-
+  
     # if event.type == questions.question_textbox.
     #   questions.question_textbox.hide()
 
@@ -77,9 +77,12 @@ while run:
           else:
             questions.question_answered('incorrectly')
           popup_open = False
-
-    popup.manager.process_events(event)
+        else:
+          questions.question_ui.hide_all()
+ 
+  popup.manager.process_events(event)  
   popup.manager.update(time_delta)
+
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
@@ -163,7 +166,7 @@ while run:
         else:
             spy.isJump = False
             spy.jumpCount = 5
-            
+        
   redrawGameWindow()
 
 pygame.quit()   #If we exit the loop this will execute and close our game
