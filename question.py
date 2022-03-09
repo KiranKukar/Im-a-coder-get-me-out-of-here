@@ -14,11 +14,16 @@ class Questions():
     question_bank = Question_bank()
     Question_setup(question_bank)
 
+    # Anagram
     self.anagram = Anagram()
     self.anagram.select_anagram()
     self.anagram.randomise_anagram()
 
+    # Anagram Textbox
     self.anagram_ui = Anagram_Textbox(popup.manager, self.anagram.letters)
+
+    # Passcode Entrybox
+    self.passcode_entrybox = Passcode_Textbox(popup.manager)
 
     self.question_ui = Question_ui(popup.manager, win_width, win_height)
     self.q1 = Question(popup.manager, 1, win_width, win_height, question_bank)

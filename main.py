@@ -56,6 +56,7 @@ def redrawGameWindow():
 
 spy = Player(304, 550, 64, 64)
 run = True
+
 while run:
   win.fill(BG)
   # clock.tick(27)
@@ -69,20 +70,21 @@ while run:
     #   questions.question_textbox.hide()
 
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
-      popup_open = False
       for button in questions.answer_buttons:    
         if event.ui_element == button:
           if button.text == questions.loaded_question_info.correct_answer:
             questions.question_answered('correctly')
-          else:
+          elif (button.text in questions.loaded_question_info.incorrect_answers):
             questions.question_answered('incorrectly')
-          popup_open = False
-        else:
-          questions.question_ui.hide_all()
- 
-  popup.manager.process_events(event)  
-  popup.manager.update(time_delta)
+        popup_open = False
 
+    if event.type == pygame_gui.UI_WINDOW_CLOSE:
+      if event.ui_element == questions.question_ui.ui_window.element:
+        print("Window closed")
+        questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT)
+
+  popup.manager.process_events(event)
+  popup.manager.update(time_delta)
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
@@ -112,10 +114,12 @@ while run:
         questions.question_ui.hide_all()
   elif keys[pygame.K_a]:
         print('pressed a')
+        print(popup_open)
   elif keys[pygame.K_b]:
         print('pressed b')
 
   elif keys[pygame.K_1]:
+    print('key press 1 working')
     questions.load_question(questions.q1.question_info)
     if questions.q1.question_info.answered == "no":
       popup_open = True
@@ -166,7 +170,7 @@ while run:
         else:
             spy.isJump = False
             spy.jumpCount = 5
-        
+         
   redrawGameWindow()
 
 pygame.quit()   #If we exit the loop this will execute and close our game

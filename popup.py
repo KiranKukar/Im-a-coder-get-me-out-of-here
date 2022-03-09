@@ -44,6 +44,19 @@ class Anagram_Textbox():
                         manager=manager) 
 
     # pygame_gui.core.TextBoxLayout.horiz_center_all_rows
+class Passcode_Textbox():
+  def __init__(self, manager):
+    self.element = pygame_gui.elements.UITextEntryLine(
+                        relative_rect=pygame.Rect(298, 135, 70, 40),
+                        manager=manager)
+
+    # self.test_text_entry = UITextEntryLine(pygame.Rect((int(self.options.resolution[0] / 2),
+    #                                                         int(self.options.resolution[1] * 0.50)),
+    #                                                        (200, -1)),
+    #                                            self.ui_manager,
+    #                                            object_id='#main_text_entry')
+    #     #self.test_text_entry.set_text_length_limit(3)
+    #     self.test_text_entry.set_text('hello hello hello hello hello hello')
 
 class Question_ui():
   def __init__(self, manager, win_width, win_height):
@@ -115,6 +128,8 @@ class Question_ui():
 
     if question_info.answered == 'no':
       self.enable_all()
+    else:
+      self.disable_all()
 
   def answered_correctly(self):
     self.disable_all()
