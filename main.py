@@ -48,8 +48,7 @@ class Player(pygame.sprite.Sprite):
         self.walkCount = 0
         self.isJump = False
         self.jumpCount = 5
-        self.rect = pygame.Rect(self.x, self.y, 26, 30)
-        self.rect = self.rect.inflate(40, 40)
+        self.rect = pygame.Rect(self.x + 32, self.y + 32, self.width, self.height)
         
 
 
@@ -86,7 +85,7 @@ def laptopCollision():
 
 def update(spy, keys):
   global canCollide, blocked
-  if pygame.sprite.spritecollideany(spy, map.laptop_group): # and keypress A
+  if pygame.sprite.spritecollideany(spy, map.laptop_group) and keys[pygame.K_a]: # and keypress A
     laptopCollision()
   else:
     if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
@@ -146,7 +145,7 @@ def redrawGameWindow():
     pygame.display.update()
 
 #mainloop
-spy = Player(250, 350, 64, 64)
+spy = Player(250, 350, 17, 17)
 
 canCollide = True
 blocked = ''
