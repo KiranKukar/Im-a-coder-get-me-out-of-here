@@ -69,34 +69,34 @@ def update(spy, keys):
     laptopCollision()
   else:
     if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] and spy.rect.y < 620:
             blocked = 'up'
-            spy.rect.move_ip(0, spy.vel)
-        if keys[pygame.K_DOWN]:
+            spy.rect.move_ip(0, spy.vel+5)
+        if keys[pygame.K_DOWN] and spy.rect.y > 50:
             blocked = 'down'
-            spy.rect.move_ip(0, -spy.vel)
-        if keys[pygame.K_LEFT]:
+            spy.rect.move_ip(0, -spy.vel-5)
+        if keys[pygame.K_LEFT] and spy.rect.x < 620:
             blocked = 'left'
-            spy.rect.move_ip(spy.vel, 0)
-        if keys[pygame.K_RIGHT]:
+            spy.rect.move_ip(spy.vel+5, 0)
+        if keys[pygame.K_RIGHT] and spy.rect.x > 30:
             blocked = 'right'
-            spy.rect.move_ip(-spy.vel, 0)
+            spy.rect.move_ip(-spy.vel-5, 0)
         canCollide = False
     else:
         canCollide = True
-        if keys[pygame.K_LEFT] and not blocked == 'left': 
+        if keys[pygame.K_LEFT] and not blocked == 'left' and spy.rect.x > 30: 
                 spy.rect.move_ip(-spy.vel, 0)
                 spy.left = True
                 spy.right = False
-        elif keys[pygame.K_RIGHT] and not blocked == 'right':
+        elif keys[pygame.K_RIGHT] and not blocked == 'right' and spy.rect.x < 620:
                 spy.rect.move_ip(spy.vel, 0)
                 spy.right = True
                 spy.left = False
-        elif keys[pygame.K_UP] and not blocked == 'up':
+        elif keys[pygame.K_UP] and not blocked == 'up' and spy.rect.y > 50:
                 spy.rect.move_ip(0, -spy.vel)
                 spy.right = True
                 spy.left = False
-        elif keys[pygame.K_DOWN] and not blocked == 'down':
+        elif keys[pygame.K_DOWN] and not blocked == 'down' and spy.rect.y < 620:
                 spy.rect.move_ip(0, spy.vel)
                 spy.right = True
                 spy.left = False
@@ -106,7 +106,8 @@ def update(spy, keys):
                 # spy.walkCount = 0
         blocked = ''
     
-
+  print(spy.rect.x, 'x')
+  print(spy.rect.y, 'y')
 def redrawGameWindow():
     map.draw_map(win)
     spy.draw(win)
@@ -117,7 +118,7 @@ def redrawGameWindow():
 
 
 #mainloop
-spy = Player(250, 350, 17, 17)
+spy = Player(250, 350, 33, 34)
 
 canCollide = True
 blocked = ''
