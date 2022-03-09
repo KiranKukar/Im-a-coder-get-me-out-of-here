@@ -1,18 +1,33 @@
 from tkinter import TRUE
 import pygame
-from tiles import *
 import spriteSheet
+import pygame_gui
+import time
+
+from tiles import *
+from player import *
+from popup import *
+from question_info import *
+from question import *
+
 pygame.init()
 
 player_img = pygame.image.load('./img/run_0.png')
 player_rect = player_img.get_rect()
 
 SCALE = 2
+WIN_WIDTH = 336 * SCALE
+WIN_HEIGHT = 336 * SCALE
 BG = (185, 237, 214)
-win = pygame.display.set_mode((336 * SCALE, 336 * SCALE))
+win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
+pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
+# Popup GUI
+popup = Popup(WIN_WIDTH, WIN_HEIGHT)
+questions = Questions(popup, WIN_WIDTH, WIN_HEIGHT)
+popup_open = False
 
-# Map stuff here
+# Map Tiling
 sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
 sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 
@@ -20,60 +35,13 @@ sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 map = TileMap('map21x21.csv', sprite_sheet, SCALE)
 player_rect.x, player_rect.y = map.start_x, map.start_y
 
-char = pygame.image.load('./img/idle_0.png')
-walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
-walkLeft = [pygame.image.load('./img/left_run_0.png'), pygame.image.load('./img/left_run_1.png'), pygame.image.load('./img/left_run_2.png'), pygame.image.load('./img/left_run_3.png'), pygame.image.load('./img/left_run_4.png'), pygame.image.load('./img/left_run_5.png')]
-idle = [pygame.image.load('./img/idle_0.png'), pygame.image.load('./img/idle_1.png'), pygame.image.load('./img/idle_2.png'), pygame.image.load('./img/idle_3.png')]
-
 #self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
 ##built in method to flip the images
 
-clock = pygame.time.Clock()
+clock = pygame.time.Clock()   #Used to manage how fast the screen updates
 
-class player(object):
-    def __init__(self,x,y,width,height):
-        #starting position of sprite
-        self.x = x
-        self.y = y
-        #dimensions of sprite
-        self.width = width
-        self.height = height
-        self.vel = 5
-        self.left = False
-        self.right = False
-        self.up = False
-        self.down = False
-        self.walkCount = 0
-        self.isJump = False
-        self.jumpCount = 5
-
-
-# x=300
-# y=300
-
-# #dimensions of sprite
-# width=120
-# height=87
-# vel=5
-
-    def draw(self, win):
-        if self.walkCount + 1 >= 27:
-            self.walkCount = 0
-        if self.left:
-            win.blit(walkLeft[self.walkCount//6], (self.x,self.y))
-            self.walkCount += 1
-        elif self.right:
-            win.blit(walkRight[self.walkCount//6], (self.x,self.y))
-            self.walkCount +=1
-        elif self.up:
-            win.blit(walkRight[self.walkCount//6], (self.x,self.y))
-            self.walkCount +=1
-        elif self.down:
-            win.blit(walkRight[self.walkCount//6], (self.x,self.y))
-            self.walkCount +=1
-        else:
-            win.blit(idle[self.walkCount//20], (self.x,self.y))
-            self.walkCount +=1
+# Timer for Popup Manager GUI
+time_delta = clock.tick(60)/1000.0
 
 def redrawGameWindow():
     # global walkCount
@@ -81,30 +49,47 @@ def redrawGameWindow():
     # win.blit(map, (0,0))   #This will draw our background image at (0,0)
                           #In pygame the top left corner of the screen is (0,0) and the bottom right is (width, height). This means to move up we subtract from the y of our character and to move down we add to the y.
     spy.draw(win)
+    popup.manager.draw_ui(win)
+    
     
     pygame.display.update()
 
-#mainloop
-spy = player(200, 410, 64,64)
+spy = Player(304, 550, 64, 64)
 run = True
 while run:
   win.fill(BG)
-#   clock.tick(27)
-#   #pygame.time.delay(100)   #This will delay the game the given amount of milliseconds. In our casee 0.1 seconds will be the delay
-#   #check for event
-  for event in pygame.event.get():   #This will loop through a list of any keyboard or mouse events.
+  # clock.tick(27)
+
+#EVENT PROCESSING LOOP
+  for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
     if event.type == pygame.QUIT:   #Checks if the red button in the corner of the window is clicked
-#       #if you hit big red button in corner to close window, then game will end also
       run=False   #Ends the game loop
+
+    # if event.type == questions.question_textbox.
+    #   questions.question_textbox.hide()
+
+    if event.type == pygame_gui.UI_BUTTON_PRESSED:
+      for button in questions.answer_buttons:    
+        if event.ui_element == button:
+          if button.text == questions.loaded_question_info.correct_answer:
+            questions.question_answered('correctly')
+          else:
+            questions.question_answered('incorrectly')
+          popup_open = False
+
+  popup.manager.process_events(event)
+  popup.manager.update(time_delta)
+  
+  
 
   keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
 
-
-  if keys[pygame.K_LEFT] and spy.x > spy.vel:   #vel changes speed of movement
+  if keys[pygame.K_LEFT] and popup_open == False:   #vel changes speed of movement
         spy.x -= spy.vel
         spy.left = True
         spy.right = False
-  elif keys[pygame.K_RIGHT] and spy.x < 1260 - spy.width - spy.vel:
+        questions.question_ui.hide_all()
+  elif keys[pygame.K_RIGHT] and popup_open == False:
         #character not allowed to move off right of screen
         #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
         #width is the width of the character
@@ -112,19 +97,36 @@ while run:
         spy.x += spy.vel
         spy.right = True
         spy.left = False
-  elif keys[pygame.K_UP] and spy.y > spy.vel:
+        questions.question_ui.hide_all()
+  elif keys[pygame.K_UP] and popup_open == False:
         spy.y -= spy.vel
         spy.right = True
         spy.left = False
-  elif keys[pygame.K_DOWN] and spy.y < 700 - spy.height - spy.vel:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+        questions.question_ui.hide_all()
+  elif keys[pygame.K_DOWN] and popup_open == False:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
         spy.y += spy.vel
         spy.right = True
         spy.left = False
+        questions.question_ui.hide_all()
+  elif keys[pygame.K_a]:
+        print('pressed a')
+  elif keys[pygame.K_b]:
+        print('pressed b')
 
+  elif keys[pygame.K_1]:
+    questions.load_question(questions.q1.question_info)
+    if questions.q1.question_info.answered == "no":
+      popup_open = True
+    
+  elif keys[pygame.K_2]:
+    questions.question_ui.hide_all()
+    popup_open = False
+
+  elif keys[pygame.K_ESCAPE]:
+        break
   else:
         spy.right = False
         spy.left = False
-        # spy.walkCount = 0
         
   if not(spy.isJump):
         if keys[pygame.K_SPACE]:
@@ -142,11 +144,6 @@ while run:
         else:
             spy.isJump = False
             spy.jumpCount = 5
-  
-  #this will fill the background with black so you don't see a trail of red rectangles
-
-#   #pygame.draw.rect(win, (255, 0, 0), (x, y, width, height))   #This takes: window/surface, color, rect
-#   #pygame.display.update()   #This updates the screen so we can see our rectangle
             
   redrawGameWindow()
 
