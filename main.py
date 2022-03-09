@@ -2,6 +2,7 @@ import pygame, sys
 import pygame_menu
 from tiles import *
 import spriteSheet
+import textwrap
 pygame.init()
 
 player_img = pygame.image.load('./img/run_0.png')
@@ -86,12 +87,22 @@ def redrawGameWindow():
 
 
 font = pygame.font.SysFont('consolas', 60)
-smallText = pygame.font.SysFont('arial', 20)
+smallText = pygame.font.SysFont('consolas', 10)
+story_text = "Hello Agent! Last night while out for drinks with your collegues at MI5 you overheard your coworker planning to bring down MI5 by scrambling the code in their firewalls. That’s the last thing you rememeber. You’ve woken up with a massive headache in the server room. The doors are locked and they’ve already sabotaged the code. They must have left you here to frame you. Can you fix the code to foil their plans and break your way out!"
+# first_stage_story = story_text.splitlines()
+first_stage_story = textwrap.wrap(story_text)
  
-def draw_text(text, font, colour, surface, x, y):
+def draw_header(text, font, colour, surface, x, y):
     textobj = font.render(text, 1, colour) 
     textrect = textobj.get_rect()
     textrect.topleft = (x, y)
+    # textrect.center = (x // 2, y // 2)
+    surface.blit(textobj, textrect)
+
+def draw_text(text, smallText, colour, surface, x, y):
+    textobj = smallText.render(text, 1, colour) 
+    textrect = textobj.get_rect()
+    textrect.center = (x // 2, y // 2)
     surface.blit(textobj, textrect)
 
 #Adding a click variable
@@ -101,25 +112,22 @@ def main_menu():
     while True:
  
         win.fill((0,0,0))
-        draw_text('main menu', font, (255, 255, 255), win, 20, 20)
+        draw_header('main menu', font, (255, 255, 255), win, 20, 20)
  
         mx, my = pygame.mouse.get_pos()
  
         button_1 = pygame.Rect(50, 100, 200, 50)
         # textSurf, textRect = button_1("Start game!", smallText)
-        # textRect.center = ( (150+(100/2)), (450+(50/2)) )
+        # button_1.blit('Start Game!', (100, 100))
+        # textRect.center = ( (150+(50/2)), (450+(50/2)) )
         # gameDisplay.blit(textSurf, textRect)
 
-        button_2 = pygame.Rect(50, 200, 200, 50)
         #This is to select the box with your mouse.
         if button_1.collidepoint((mx, my)):
             if click:
-                game()
-        if button_2.collidepoint((mx, my)):
-            if click:
-                instructions()
+                first_screen()
         pygame.draw.rect(win, (255, 0, 0), button_1)
-        pygame.draw.rect(win, (255, 0, 0), button_2)
+
         
         #Resets click to false after every frame. 
         click = False
@@ -138,12 +146,33 @@ def main_menu():
         pygame.display.update()
         # clock.tick(60)
 
-def instructions():
+def first_screen():
     running = True
+    click = False
     while running:
+        
         win.fill((0,0,0))
+        draw_text(story_text, smallText, (255, 255, 255), win, 20, 600)
+
+        mx, my = pygame.mouse.get_pos()
  
-        draw_text('instructions', font, (255, 255, 255), win, 20, 20)
+        button_1 = pygame.Rect(50, 100, 200, 50)
+        # textSurf, textRect = button_1("Start game!", smallText)
+        # textRect.center = ( (150+(100/2)), (450+(50/2)) )
+        # gameDisplay.blit(textSurf, textRect)
+
+        button_2 = pygame.Rect(50, 200, 200, 50)
+        #This is to select the box with your mouse.
+        if button_1.collidepoint((mx, my)):
+            if click:
+                game()
+        if button_2.collidepoint((mx, my)):
+            if click:
+                main_menu()
+        pygame.draw.rect(win, (255, 0, 0), button_1)
+        pygame.draw.rect(win, (255, 0, 0), button_2)
+
+        draw_header('Briefing Room:', font, (255, 255, 255), win, 20, 20)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -151,6 +180,9 @@ def instructions():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
         
         pygame.display.update()
         clock.tick(60)
