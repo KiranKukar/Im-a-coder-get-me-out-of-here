@@ -12,8 +12,10 @@ from question import *
 
 pygame.init()
 
-player_img = pygame.image.load('./img/run_0.png')
-player_rect = player_img.get_rect()
+
+
+# player_img = pygame.image.load('./img/run_0.png')
+# player_rect = player_img.get_rect()
 
 SCALE = 2
 WIN_WIDTH = 336 * SCALE
@@ -31,17 +33,123 @@ popup_open = False
 sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
 sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 
-
 map = TileMap('map21x21.csv', sprite_sheet, SCALE)
-player_rect.x, player_rect.y = map.start_x, map.start_y
+# player_rect.x, player_rect.y = map.start_x, map.start_y
 
 #self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
 ##built in method to flip the images
+
 
 clock = pygame.time.Clock()   #Used to manage how fast the screen updates
 
 # Timer for Popup Manager GUI
 time_delta = clock.tick(60)/1000.0
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self,x,y,width,height):
+        pygame.sprite.Sprite.__init__(self)
+        #starting position of sprite
+        self.x = x
+        self.y = y
+        #dimensions of sprite
+        self.width = width
+        self.height = height
+        self.vel = 5
+        self.left = False
+        self.right = False
+        self.up = False
+        self.down = False
+        self.walkCount = 0
+        self.isJump = False
+        self.jumpCount = 5
+        self.rect = pygame.Rect(self.x + 32, self.y + 32, self.width, self.height)
+        
+
+
+# x=300
+# y=300
+
+# #dimensions of sprite
+# width=120
+# height=87
+# vel=5
+
+    def draw(self, win):
+        if self.walkCount + 1 >= 27:
+            self.walkCount = 0
+        if self.left:
+            win.blit(walkLeft[self.walkCount//6], (self.rect.x,self.rect.y))
+            self.walkCount += 1
+        elif self.right:
+            win.blit(walkRight[self.walkCount//6], (self.rect.x,self.rect.y))
+            self.walkCount +=1
+        elif self.up:
+            win.blit(walkRight[self.walkCount//6], (self.rect.x,self.rect.y))
+            self.walkCount +=1
+        elif self.down:
+            win.blit(walkRight[self.walkCount//6], (self.rect.x,self.rect.y))
+            self.walkCount +=1
+        else:
+            win.blit(idle[self.walkCount//20], (self.rect.x,self.rect.y))
+            self.walkCount +=1
+
+
+
+def laptopCollision():
+    print('laptop collision. Time for a question!')
+
+def update(spy, keys):
+  global canCollide, blocked
+  if pygame.sprite.spritecollideany(spy, map.laptop_group) and keys[pygame.K_a]: # and keypress A
+    laptopCollision()
+  else:
+    if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
+        if keys[pygame.K_UP]:
+            blocked = 'up'
+            spy.rect.move_ip(0, spy.vel)
+        if keys[pygame.K_DOWN]:
+            blocked = 'down'
+            spy.rect.move_ip(0, -spy.vel)
+        if keys[pygame.K_LEFT]:
+            blocked = 'left'
+            spy.rect.move_ip(spy.vel, 0)
+        if keys[pygame.K_RIGHT]:
+            blocked = 'right'
+            spy.rect.move_ip(-spy.vel, 0)
+        canCollide = False
+    else:
+        canCollide = True
+        print(blocked)
+        if keys[pygame.K_LEFT] and not blocked == 'left': # and not left blast collide/disabled
+        #vel changes speed of movement
+                spy.rect.move_ip(-spy.vel, 0)
+                spy.left = True
+                spy.right = False
+        elif keys[pygame.K_RIGHT] and not blocked == 'right':
+                #character not allowed to move off right of screen
+                #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
+                #width is the width of the character
+                #the position of the character will not be allowed to move past the border now set the width of the character from the edge
+                spy.rect.move_ip(spy.vel, 0)
+                spy.right = True
+                spy.left = False
+
+        elif keys[pygame.K_UP] and not blocked == 'up':
+                spy.rect.move_ip(0, -spy.vel)
+                spy.right = True
+                spy.left = False
+        elif keys[pygame.K_DOWN] and not blocked == 'down':   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
+                spy.rect.move_ip(0, spy.vel)
+                spy.right = True
+                spy.left = False
+
+        else:
+                spy.right = False
+                spy.left = False
+                # spy.walkCount = 0
+        blocked = ''
+    
 
 def redrawGameWindow():
     # global walkCount
@@ -54,7 +162,13 @@ def redrawGameWindow():
     
     pygame.display.update()
 
-spy = Player(304, 550, 64, 64)
+
+#mainloop
+spy = Player(250, 350, 17, 17)
+
+canCollide = True
+blocked = ''
+
 run = True
 while run:
   win.fill(BG)
@@ -127,7 +241,9 @@ while run:
   else:
         spy.right = False
         spy.left = False
-        
+
+  update(spy,keys)
+
   if not(spy.isJump):
         if keys[pygame.K_SPACE]:
             spy.isJump = True
