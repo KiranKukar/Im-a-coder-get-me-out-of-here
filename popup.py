@@ -140,7 +140,7 @@ class Question_ui():
 
   def answered_incorrectly(self):
     self.disable_all()
-    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FF0000><i>Wrong!</font></i>')
+    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FF0000><i>Wrong!</font></i><br><br>Correct answer: {self.question_info.correct_answer}')
     self.question_info.answered = "Incorrectly"
     self.rewrite_question()
 
