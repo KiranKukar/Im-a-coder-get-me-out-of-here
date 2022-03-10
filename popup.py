@@ -1,5 +1,6 @@
 import pygame
 import pygame_gui
+import random
 
 class Popup():
     def __init__(self, win_width, win_height):
@@ -66,9 +67,18 @@ class Question_ui():
     self.hide_all()
 
   def create_ui_window(self, win_width, win_height):
+    laptop_names = [
+                    "alex-air @mac os",
+                    "elliot-PC MSDos @home ",
+                    "esther-PC HOME (win11)",
+                    "haydn-mac personal - @macbook pro",
+                    "kiran -mac(main) @home-air",
+                    "saad-win95 PC-Desktop",
+                   ]
+    display_title = random.choice(laptop_names)
+
     ui_window_percentage_size = 0.75
     ui_window_padding = win_width * (1 - ui_window_percentage_size)
-    display_title = "Question"
     self.ui_window = Window(ui_window_padding/2, ui_window_padding/2, win_width - ui_window_padding, win_height - ui_window_padding, display_title, self.manager)
 
   def show_ui_window(self):
