@@ -1,6 +1,6 @@
 import pygame
 import pygame_gui
-
+import pygame.mixer
 class Popup():
     def __init__(self, win_width, win_height):
       self.manager = pygame_gui.UIManager((win_width, win_height)) 
