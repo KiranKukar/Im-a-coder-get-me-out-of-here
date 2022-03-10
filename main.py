@@ -30,6 +30,7 @@ pygame.mixer.music.set_volume(0.1)
 # Game sounds
 question_sound = pygame.mixer.Sound('./Sounds/MGSalertsound.mp3')
 endgame_sound = pygame.mixer.Sound('./Sounds/endgamemusic.mp3')
+walk_sound = pygame.mixer.Sound('./Sounds/cute-walk.wav')
 
 # pygame.mixer.Sound.set_volume(0.1)
 # question_sound.play()   #add this after the action you want it to play
@@ -110,18 +111,22 @@ def update(spy, keys):
   else:
     if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
         if keys[pygame.K_UP] and spy.rect.y < 620 and popup_open == False:
+            walk_sound.play()
             blocked = 'up'
             spy.rect.move_ip(0, spy.vel+5)
             questions.question_ui.hide_all()
         if keys[pygame.K_DOWN] and spy.rect.y > 50 and popup_open == False:
+            walk_sound.play()
             blocked = 'down'
             spy.rect.move_ip(0, -spy.vel-5)
             questions.question_ui.hide_all()
         if keys[pygame.K_LEFT] and spy.rect.x < 620 and popup_open == False:
+            walk_sound.play()
             blocked = 'left'
             spy.rect.move_ip(spy.vel+5, 0)
             questions.question_ui.hide_all()
         if keys[pygame.K_RIGHT] and spy.rect.x > 30 and popup_open == False:
+            walk_sound.play()
             blocked = 'right'
             spy.rect.move_ip(-spy.vel-5, 0)
             questions.question_ui.hide_all()
