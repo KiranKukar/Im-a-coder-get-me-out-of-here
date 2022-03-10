@@ -23,7 +23,7 @@ pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 # Popup GUI
 popup = Popup(WIN_WIDTH, WIN_HEIGHT)
 questions = Questions(popup, WIN_WIDTH, WIN_HEIGHT, MODE)
-popup_open = False
+popup_open = True
 
 # Map Tiling
 sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
@@ -159,6 +159,7 @@ run = True
 while run:
   win.fill(BG)
   map = map_instance.map
+  intro = True
 
   # Timer for Popup Manager GUI
   time_delta = clock.tick(60)/1000.0
@@ -216,6 +217,10 @@ while run:
             spy.right = False
             spy.left = False
             spy.walkCount = 0
+            if intro:
+              intro = False
+              questions.intro_ui.hide_all()
+              popup_open = False
   else:
         if spy.jumpCount >= -5:
             neg = 1

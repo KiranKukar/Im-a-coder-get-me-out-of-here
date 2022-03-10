@@ -21,6 +21,7 @@ class Questions():
     question_bank = Question_bank()
     Question_setup(question_bank)
     self.setup_anagram()
+    self.setup_intro()
 
     self.question_ui = Question_ui(popup.manager, win_width, win_height)
     self.q1 = Question(popup.manager, 1, win_width, win_height, question_bank)
@@ -39,6 +40,9 @@ class Questions():
 
     self.answer_buttons = [self.answer_button_1, self.answer_button_2, self.answer_button_3, self.answer_button_4]
   
+  def setup_intro(self):
+    self.intro_ui = Intro_ui(self.popup.manager, self.win_width, self.win_height, self.mode)
+
   def setup_anagram(self):
     self.anagram = Anagram(self.mode)
 
@@ -86,3 +90,4 @@ class Questions():
       self.anagram_ui.element.set_text(f"<font color=#03A062><b>>>> CORRECT! You're Free! <<<</b></font>")
       self.anagram_ui.text_effect_typing_appear()
       self.passcode_ui.hide_all()
+  

@@ -209,20 +209,32 @@ class Passcode_ui():
     self.passcode_window.element.show()
     self.passcode_entrybox.element.show()
    
+class Intro_ui():
+  def __init__(self, manager, win_width, win_height, mode):
+    self.manager = manager
+    self.win_width = win_width
+    self.win_height = win_height
+    self.mode = mode
 
+    self.create_all()
+    self.intro_textbox.text_effect_typing_appear()
 
+  def create_intro_window(self):
+    ui_window_percentage_size = 0.85
+    ui_window_padding = self.win_width * (1 - ui_window_percentage_size)
+    display_title = "Mission briefing"
+    
+    self.intro_window = Window(ui_window_padding/2, ui_window_padding/2, self.win_width - ui_window_padding, self.win_height - ui_window_padding, display_title, self.manager)
+    
+  def create_intro_textbox(self):
+    text = f"Mode: {self.mode}<br><br><br>Agent, are you drunk again?<br><br><br>Careful you don't bump into walls, you may get disoriented.<br><br><br>Add more story here.<br><br><br>Press Spacebar to Continue..."
+    self.intro_textbox = Textbox(20, 20, 500, 470, f'{text}', self.manager, self.intro_window.element)
 
-  #writes the buttons - accepts lists of answers in order and prints associated answers in order
+  def create_all(self):
+    self.create_intro_window()
+    self.create_intro_textbox()
 
-  #update text_box to say correct and another for incorrect - doesn't need to check logic
-  # correct below question text
-  # correct in green
-  # incorrect in red
+  def hide_all(self):
+    self.intro_window.element.hide()
+    self.intro_textbox.element.hide()
 
-  # write question - updates textbox to string fed in        
-  # changing button colors based on              
-          
-
-
-# questions.question_textbox.append_html_text(f'<br><br><i>Correct!</i>')
-# questions.question_textbox.append_html_text(f'<br><br><i><font color=#FF0000>Wrong!</font></i>')
