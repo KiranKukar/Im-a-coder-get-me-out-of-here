@@ -2,6 +2,7 @@ from tkinter import TRUE
 import pygame
 import spriteSheet
 import pygame_gui
+import pygame.mixer
 
 
 from map import *
@@ -20,6 +21,7 @@ BG = (185, 237, 214)
 win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
+pygame.mixer.init()
 #Game music
 music = pygame.mixer.music.load('./sounds/MissionImpossibleTheme.mp3')
 pygame.mixer.music.play(-1)
@@ -27,6 +29,8 @@ pygame.mixer.music.set_volume(0.1)
 
 # Game sounds
 question_sound = pygame.mixer.Sound('./Sounds/MGSalertsound.mp3')
+endgame_sound = pygame.mixer.Sound('./Sounds/endgamemusic.mp3')
+
 # pygame.mixer.Sound.set_volume(0.1)
 # question_sound.play()   #add this after the action you want it to play
 
@@ -48,7 +52,6 @@ clock = pygame.time.Clock()
 
 # Collision functions
 def laptopCollision():
-  question_sound.play
   global popup_open
   if pygame.sprite.spritecollideany(spy, map.laptop1):
     print('laptop 1 collision')
@@ -89,6 +92,8 @@ def exitdoorCollision():
     if map_instance.end == True:
       run = False
       print('1')
+      pygame.mixer.music.stop()
+      endgame_sound.play()
     else:
       questions.load_passcode()
       popup_open = True

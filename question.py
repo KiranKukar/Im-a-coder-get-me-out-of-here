@@ -1,9 +1,11 @@
 import random
+import pygame.mixer
 
 from popup import *
 from question_info import *
 from anagram import *
 
+endgame_sound = pygame.mixer.Sound('./Sounds/endgamemusic.mp3')
 class Question():
   def __init__(self, manager, number, win_width, win_height, question_bank):
     self.number = number
@@ -90,4 +92,6 @@ class Questions():
       self.anagram_ui.element.set_text(f"<font color=#03A062><b>>>> CORRECT! You're Free! <<<</b></font>")
       self.anagram_ui.text_effect_typing_appear()
       self.passcode_ui.hide_all()
+      pygame.mixer.music.stop()
+      endgame_sound.play()
   
