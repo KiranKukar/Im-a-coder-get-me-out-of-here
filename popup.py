@@ -5,6 +5,7 @@ import pygame.mixer
 
 pygame.mixer.init()
 question_sound = pygame.mixer.Sound('./Sounds/MGSalertsound.mp3')
+typing_sound = pygame.mixer.Sound('./Sounds/keyboard-typing.wav')
 class Popup():
     def __init__(self, win_width, win_height):
       self.manager = pygame_gui.UIManager((win_width, win_height)) 
@@ -251,6 +252,7 @@ class Intro_ui():
   def create_intro_textbox(self):
     text = f"Mode: {self.mode}<br><br><br>Agent, are you drunk again?<br><br><br>Careful you don't bump into walls, you may get disoriented.<br><br><br>Add more story here.<br><br><br>Press Spacebar to Continue..."
     self.intro_textbox = Textbox(20, 20, 500, 470, f'{text}', self.manager, self.intro_window.element)
+    typing_sound.play()
 
   def create_all(self):
     self.create_intro_window()
