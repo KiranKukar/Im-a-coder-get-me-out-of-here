@@ -25,7 +25,7 @@ pygame.mixer.init()
 #Game music
 music = pygame.mixer.music.load('./sounds/MissionImpossibleTheme.mp3')
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.1)
+pygame.mixer.music.set_volume(0.05)
 
 # Game sounds
 question_sound = pygame.mixer.Sound('./Sounds/MGSalertsound.mp3')
