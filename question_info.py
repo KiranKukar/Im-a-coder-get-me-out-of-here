@@ -5,9 +5,8 @@ class Question_bank():
     self.list = []
 
 class Question_info():
-  def __init__(self, id, question, correct_answer, incorrect_answers):
+  def __init__(self, question, correct_answer, incorrect_answers):
     self.answered = 'no'
-    self.id = id
     self.question = question
     self.correct_answer = correct_answer
     self.incorrect_answers = incorrect_answers
@@ -74,24 +73,14 @@ class Question_setup():
       'incorrect_answers' : ['Kalahari', 'Gobi', 'Sahara']
     }
 
-    questions = {
-      1 : q1,
-      2 : q2,
-      3 : q3,
-      4 : q4,
-      5 : q5,
-      6 : q6,
-      7 : q7,
-      8 : q8,
-      9 : q9,
-      10 : q10            
-    }
+    questions = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10]
+    random.shuffle(questions)
 
     self.load_questions(questions)
 
   def load_questions(self, questions):
-    for key, value in questions.items():
-      (self.question_bank.list).append(Question_info(key, value['question'], value['correct_answer'], value['incorrect_answers']))
+    for value in questions:
+      (self.question_bank.list).append(Question_info(value['question'], value['correct_answer'], value['incorrect_answers']))
 
 
 

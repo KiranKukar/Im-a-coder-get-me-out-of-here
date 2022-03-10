@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.walkCount = 0
         self.isJump = False
         self.jumpCount = 5
-        self.rect = pygame.Rect(self.x + 32, self.y + 32, self.width, self.height)
+        self.rect = pygame.Rect(self.x, self.y, self.width - 20, self.height - 20)
         self.char = pygame.image.load('./img/idle_0.png')
         self.walkRight = [pygame.image.load('./img/run_0.png'), pygame.image.load('./img/run_1.png'), pygame.image.load('./img/run_2.png'), pygame.image.load('./img/run_3.png'), pygame.image.load('./img/run_4.png'), pygame.image.load('./img/run_5.png')]
         self.walkLeft = [pygame.image.load('./img/left_run_0.png'), pygame.image.load('./img/left_run_1.png'), pygame.image.load('./img/left_run_2.png'), pygame.image.load('./img/left_run_3.png'), pygame.image.load('./img/left_run_4.png'), pygame.image.load('./img/left_run_5.png')]

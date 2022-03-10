@@ -37,13 +37,24 @@ class Textbox():
     self.element.set_active_effect(pygame_gui.TEXT_EFFECT_TYPING_APPEAR, params = {'time_per_letter': .01})
 
 class Anagram_Textbox():
-  def __init__(self, manager):
+  def __init__(self, manager, html_text):
     self.element = pygame_gui.elements.UITextBox(
-                        relative_rect=pygame.Rect(256, 20, 158, 30),
-                        html_text='<b> P  _  T  _  O  N</b>',
+                        relative_rect=pygame.Rect(206, 20, 258, 30),
+                        html_text=f'<b>{html_text}</b>',
                         manager=manager) 
+                  
+  def fade_in(self):
+    self.element.set_active_effect(pygame_gui.TEXT_EFFECT_FADE_IN)
 
-    # pygame_gui.core.TextBoxLayout.horiz_center_all_rows
+  def text_effect_typing_appear(self):
+    self.element.set_active_effect(pygame_gui.TEXT_EFFECT_TYPING_APPEAR, params = {'time_per_letter': .02})
+
+class Passcode_Entrybox():
+  def __init__(self, manager, container):
+    self.element = pygame_gui.elements.UITextEntryLine(
+                        relative_rect=pygame.Rect(25, 25, 315, 50),
+                        manager=manager,
+                        container=container)
 
 class Question_ui():
   def __init__(self, manager, win_width, win_height):
@@ -68,7 +79,6 @@ class Question_ui():
   
   def create_textbox(self):
     self.question_textbox = Textbox(50, 40, 375, 150, "Question Placeholder", self.manager, self.ui_window.element)
-    self.question_textbox.text_effect_typing_appear()
 
   def show_question_textbox(self):
     self.question_textbox.element.show()
@@ -110,20 +120,28 @@ class Question_ui():
 
   def load_question(self, question_info):
     self.question_info = question_info
+    self.question_textbox.text_effect_typing_appear()
 
     self.write_all()
     self.show_all()
 
+    if question_info.answered == 'no':
+      self.enable_all()
+      print('enabling all')
+    else:
+      self.disable_all()
+      print('disabling all')
+
   def answered_correctly(self):
     self.disable_all()
-    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><i>Correct!</i>')
+    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FFFFFF><i>Correct!</font></i>')
     self.question_info.answered = "Correctly"
     self.rewrite_question()
 
   def answered_incorrectly(self):
     self.disable_all()
-    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FF0000><i>Wrong!</i>')
-    self.question_info.answered = "Correctly"
+    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FF0000><i>Wrong!</font></i>')
+    self.question_info.answered = "Incorrectly"
     self.rewrite_question()
 
   def disable_all(self):
@@ -154,25 +172,69 @@ class Question_ui():
     self.write_buttons()
     self.write_question()
 
-   
+class Passcode_ui():
+  def __init__(self, manager, win_width, win_height, anagram, mode):
+    self.manager = manager
+    self.win_width = win_width
+    self.win_height = win_height
+    self.anagram = anagram
+    self.mode = mode
 
-  
+    self.create_all()
+    self.hide_all()
+
+  def create_passcode_window(self):
+    ui_window_percentage_size = 0.60
+    ui_window_padding = self.win_width * (1 - ui_window_percentage_size)
+    if self.mode == "easy":
+      display_title = "Can you solve the word?"
+    elif self.mode == "hard":
+      display_title = "Can you solve the anagram?"
     
+
+    self.passcode_window = Window(ui_window_padding/2, ui_window_padding/2, self.win_width - ui_window_padding, 160, display_title, self.manager)
+    
+  def create_passcode_entrybox(self):
+    self.passcode_entrybox = Passcode_Entrybox(self.manager, self.passcode_window.element)
+
+  def create_all(self):
+    self.create_passcode_window()
+    self.create_passcode_entrybox()
+
+  def hide_all(self):
+    self.passcode_window.element.hide()
+    self.passcode_entrybox.element.hide()
+  
+  def show_all(self):
+    self.passcode_window.element.show()
+    self.passcode_entrybox.element.show()
    
+class Intro_ui():
+  def __init__(self, manager, win_width, win_height, mode):
+    self.manager = manager
+    self.win_width = win_width
+    self.win_height = win_height
+    self.mode = mode
 
+    self.create_all()
+    self.intro_textbox.text_effect_typing_appear()
 
+  def create_intro_window(self):
+    ui_window_percentage_size = 0.85
+    ui_window_padding = self.win_width * (1 - ui_window_percentage_size)
+    display_title = "Mission briefing"
+    
+    self.intro_window = Window(ui_window_padding/2, ui_window_padding/2, self.win_width - ui_window_padding, self.win_height - ui_window_padding, display_title, self.manager)
+    
+  def create_intro_textbox(self):
+    text = f"Mode: {self.mode}<br><br><br>Agent, are you drunk again?<br><br><br>Careful you don't bump into walls, you may get disoriented.<br><br><br>Add more story here.<br><br><br>Press Spacebar to Continue..."
+    self.intro_textbox = Textbox(20, 20, 500, 470, f'{text}', self.manager, self.intro_window.element)
 
-  #writes the buttons - accepts lists of answers in order and prints associated answers in order
+  def create_all(self):
+    self.create_intro_window()
+    self.create_intro_textbox()
 
-  #update text_box to say correct and another for incorrect - doesn't need to check logic
-  # correct below question text
-  # correct in green
-  # incorrect in red
+  def hide_all(self):
+    self.intro_window.element.hide()
+    self.intro_textbox.element.hide()
 
-  # write question - updates textbox to string fed in        
-  # changing button colors based on              
-          
-
-
-# questions.question_textbox.append_html_text(f'<br><br><i>Correct!</i>')
-# questions.question_textbox.append_html_text(f'<br><br><i><font color=#FF0000>Wrong!</font></i>')
