@@ -2,7 +2,6 @@ from tkinter import TRUE
 import pygame
 import spriteSheet
 import pygame_gui
-import time
 
 
 from map import *
@@ -13,6 +12,7 @@ from question import *
 
 pygame.init()
 
+MODE = 'easy' # type easy or hard
 SCALE = 2
 WIN_WIDTH = 336 * SCALE
 WIN_HEIGHT = 336 * SCALE
@@ -22,20 +22,15 @@ pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
 # Popup GUI
 popup = Popup(WIN_WIDTH, WIN_HEIGHT)
-questions = Questions(popup, WIN_WIDTH, WIN_HEIGHT)
+questions = Questions(popup, WIN_WIDTH, WIN_HEIGHT, MODE)
 popup_open = False
 
 # Map Tiling
 sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
 sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 
+
 map_instance = Map(sprite_sheet, SCALE)
-
-# def define_map():
-#   map = map_instance.map
-# return map
-
-# define_map()
 
 # Clock to manage how fast the screen updates
 clock = pygame.time.Clock()   
@@ -192,7 +187,7 @@ while run:
 
       if event.ui_element == questions.passcode_ui.passcode_window.element:
         print("Passcode window closed")
-        questions.passcode_ui = Passcode_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT, questions.anagram)
+        questions.passcode_ui = Passcode_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT, questions.anagram, MODE)
       popup_open = False
 
     if event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED:

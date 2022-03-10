@@ -173,11 +173,12 @@ class Question_ui():
     self.write_question()
 
 class Passcode_ui():
-  def __init__(self, manager, win_width, win_height, anagram):
+  def __init__(self, manager, win_width, win_height, anagram, mode):
     self.manager = manager
     self.win_width = win_width
     self.win_height = win_height
     self.anagram = anagram
+    self.mode = mode
 
     self.create_all()
     self.hide_all()
@@ -185,7 +186,11 @@ class Passcode_ui():
   def create_passcode_window(self):
     ui_window_percentage_size = 0.60
     ui_window_padding = self.win_width * (1 - ui_window_percentage_size)
-    display_title = "Can you solve the anagram?"
+    if self.mode == "easy":
+      display_title = "Can you solve the word?"
+    elif self.mode == "hard":
+      display_title = "Can you solve the anagram?"
+    
 
     self.passcode_window = Window(ui_window_padding/2, ui_window_padding/2, self.win_width - ui_window_padding, 160, display_title, self.manager)
     

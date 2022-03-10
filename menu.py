@@ -1,4 +1,5 @@
 # Setup Python 
+from socket import EAI_SYSTEM
 from tkinter import Button
 import pygame, sys
  
@@ -70,21 +71,13 @@ def main_menu():
         mainClock.tick(60)
  
 def game_easy():
-    running = True
-    while running:
-        screen.fill((0,0,0))
-        
-        draw_text('game', font, (255, 255, 255), screen, 20, 20)
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    running = False
-        
-        pygame.display.update()
-        mainClock.tick(60)
+  exec(open("main.py").read())
+  mode = 'easy'
+  return mode
+
+def game_hard():
+  mode = 'hard'
+  return mode
  
 def how_to_play():
     running = True

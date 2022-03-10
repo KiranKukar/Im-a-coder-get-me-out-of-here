@@ -12,10 +12,11 @@ class Question():
     self.question_info = question_bank.list[number]
 
 class Questions():
-  def __init__(self, popup, win_width, win_height):
+  def __init__(self, popup, win_width, win_height, mode):
     self.popup = popup
     self.win_width = win_width
     self.win_height = win_height
+    self.mode = mode
 
     question_bank = Question_bank()
     Question_setup(question_bank)
@@ -39,25 +40,17 @@ class Questions():
     self.answer_buttons = [self.answer_button_1, self.answer_button_2, self.answer_button_3, self.answer_button_4]
   
   def setup_anagram(self):
-    self.anagram = Anagram()
+    self.anagram = Anagram(self.mode)
 
     # Anagram
     self.anagram.select_anagram()
     self.anagram.randomise_anagram()
-
-    # for testing only
-    self.anagram.add_letter()
-    self.anagram.add_letter()
-    self.anagram.add_letter()
-    self.anagram.add_letter()
-    self.anagram.add_letter()
-    self.anagram.add_letter()
  
     # Anagram UI
     self.anagram_ui = Anagram_Textbox(self.popup.manager, f'<b><font color=#43FF33>{self.anagram.letters}</font></b>')
 
     # Passcode UI
-    self.passcode_ui = Passcode_ui(self.popup.manager, self.win_width, self.win_height, self.anagram)
+    self.passcode_ui = Passcode_ui(self.popup.manager, self.win_width, self.win_height, self.anagram, self.mode)
 
   def load_question(self, question_info):
     self.question_ui.load_question(question_info)
