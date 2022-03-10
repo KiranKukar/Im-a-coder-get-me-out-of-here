@@ -20,10 +20,11 @@ BG = (185, 237, 214)
 win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
+pygame.mixer.init()
 #Game music
 music = pygame.mixer.music.load('./sounds/MissionImpossibleTheme.mp3')
 pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.1)
+pygame.mixer.music.set_volume(0.05)
 
 # Game sounds
 question_sound = pygame.mixer.Sound('./sounds/mixkit-game-level-music-689.wav')
@@ -48,7 +49,6 @@ clock = pygame.time.Clock()
 
 # Collision functions
 def laptopCollision():
-  question_sound.play
   global popup_open
   if pygame.sprite.spritecollideany(spy, map.laptop1):
     print('laptop 1 collision')
