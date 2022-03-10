@@ -146,7 +146,10 @@ def redrawGameWindow():
 
     # Draws map / spy / popups
     map.draw_map(win)
-    spy.draw(win)
+    if map_instance.end == True:
+      win.blit(pygame.image.load('./img/x_2.png'), (spy.rect.x,spy.rect.y))
+    else:
+      spy.draw(win)
     popup.manager.draw_ui(win)
     
     pygame.display.update()
