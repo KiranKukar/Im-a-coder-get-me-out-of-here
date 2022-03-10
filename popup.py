@@ -69,10 +69,10 @@ class Question_ui():
   def create_ui_window(self, win_width, win_height):
     laptop_names = [
                     "alex-air @mac os",
-                    "elliot-PC MSDos @home ",
+                    "elliott-PC MSDos @home ",
                     "esther-PC HOME (win11)",
                     "haydn-mac personal - @macbook pro",
-                    "kiran -mac(main) @home-air",
+                    "kiran-mac(main) @home-air",
                     "saad-win95 PC-Desktop",
                    ]
     display_title = random.choice(laptop_names)
