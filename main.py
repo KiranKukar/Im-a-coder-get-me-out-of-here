@@ -26,7 +26,7 @@ pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.1)
 
 # Game sounds
-question_sound = pygame.mixer.Sound('.Sounds/MGSalertsound.mp3')
+question_sound = pygame.mixer.Sound('./Sounds/MGSalertsound.mp3')
 # pygame.mixer.Sound.set_volume(0.1)
 # question_sound.play()   #add this after the action you want it to play
 

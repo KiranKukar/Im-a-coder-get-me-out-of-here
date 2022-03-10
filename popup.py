@@ -1,6 +1,9 @@
 import pygame
 import pygame_gui
 import pygame.mixer
+
+pygame.mixer.init()
+question_sound = pygame.mixer.Sound('./Sounds/MGSalertsound.mp3')
 class Popup():
     def __init__(self, win_width, win_height):
       self.manager = pygame_gui.UIManager((win_width, win_height)) 
@@ -121,6 +124,8 @@ class Question_ui():
   def load_question(self, question_info):
     self.question_info = question_info
     self.question_textbox.text_effect_typing_appear()
+    question_sound.play()
+
 
     self.write_all()
     self.show_all()
