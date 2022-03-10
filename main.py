@@ -20,6 +20,15 @@ BG = (185, 237, 214)
 win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
+#Game music
+music = pygame.mixer.music.load('./sounds/MissionImpossibleTheme.mp3')
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.1)
+
+# question_sound = pygame.mixer.Sound('./sounds/mixkit-game-level-music-689.wav')
+# question_sound.play()   #add this after the action you want it to play
+
+
 # Popup GUI
 popup = Popup(WIN_WIDTH, WIN_HEIGHT)
 questions = Questions(popup, WIN_WIDTH, WIN_HEIGHT, MODE)
