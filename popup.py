@@ -250,7 +250,7 @@ class Intro_ui():
     self.intro_window = Window(ui_window_padding/2, ui_window_padding/2, self.win_width - ui_window_padding, self.win_height - ui_window_padding, display_title, self.manager)
     
   def create_intro_textbox(self):
-    text = f"Mode: {self.mode}<br><br><br>Agent, are you drunk again?<br><br><br>Careful you don't bump into walls, you may get disoriented.<br><br><br>Add more story here.<br><br><br>Press Spacebar to Continue..."
+    text = f"Mode: {self.mode}<br><br>Agent, are you drunk again?<br><br>Careful you don't bump into walls, you may get disoriented.<br><br>Looks like some hackers are trying to take down MI5<br><br>They have locked you in the basement and sabotaged the terminals.<br><br>Can you answer the questions to escape and foil their plans.<br><br>Use the arrow keys to move around and press spacebar when you get to a terminal.<br><br>Press Spacebar to Continue..."
     self.intro_textbox = Textbox(20, 20, 500, 470, f'{text}', self.manager, self.intro_window.element)
     typing_sound.play()
 
