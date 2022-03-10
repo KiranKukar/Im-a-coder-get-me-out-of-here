@@ -196,7 +196,7 @@ while run:
     if event.type == pygame_gui.UI_WINDOW_CLOSE:
       if event.ui_element == questions.question_ui.ui_window.element:
         print("Question window closed")
-        questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT)
+        questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT, questions)
 
       if event.ui_element == questions.passcode_ui.passcode_window.element:
         print("Passcode window closed")
