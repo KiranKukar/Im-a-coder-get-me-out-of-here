@@ -25,7 +25,9 @@ music = pygame.mixer.music.load('./sounds/MissionImpossibleTheme.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.1)
 
-# question_sound = pygame.mixer.Sound('./sounds/mixkit-game-level-music-689.wav')
+# Game sounds
+question_sound = pygame.mixer.Sound('./sounds/mixkit-game-level-music-689.wav')
+# pygame.mixer.Sound.set_volume(0.1)
 # question_sound.play()   #add this after the action you want it to play
 
 
@@ -46,6 +48,7 @@ clock = pygame.time.Clock()
 
 # Collision functions
 def laptopCollision():
+  question_sound.play
   global popup_open
   if pygame.sprite.spritecollideany(spy, map.laptop1):
     print('laptop 1 collision')
