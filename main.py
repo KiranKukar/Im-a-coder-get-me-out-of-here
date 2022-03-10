@@ -42,6 +42,7 @@ clock = pygame.time.Clock()
 
 # Collision functions
 def laptopCollision():
+  global popup_open
   if pygame.sprite.spritecollideany(spy, map.laptop1):
     print('laptop 1 collision')
     questions.load_question(questions.q1.question_info)
@@ -73,11 +74,27 @@ def laptopCollision():
     if questions.q6.question_info.answered == "no":
       popup_open = True
 
+
+def exitdoorCollision():
+  global popup_open, run
+  if pygame.sprite.spritecollideany(spy, map.exit_door):
+    print('exit door collision')
+    if map_instance.end == True:
+      run = False
+      print('1')
+    else:
+      questions.load_passcode()
+      popup_open = True
+      print('2')
+  return run
+
 # Keys (with collision block)
 def update(spy, keys):
-  global canCollide, blocked
+  global canCollide, blocked, popup_open
   if pygame.sprite.spritecollideany(spy, map.laptop_group) and keys[pygame.K_SPACE] and popup_open == False:
     laptopCollision()
+  if pygame.sprite.spritecollideany(spy, map.exit_door) and keys[pygame.K_SPACE] and popup_open == False:
+    exitdoorCollision()
   else:
     if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
         if keys[pygame.K_UP] and spy.rect.y < 620 and popup_open == False:
@@ -167,8 +184,22 @@ while run:
 
     if event.type == pygame_gui.UI_WINDOW_CLOSE:
       if event.ui_element == questions.question_ui.ui_window.element:
-        print("Window closed")
+        print("Question window closed")
         questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT)
+
+      if event.ui_element == questions.passcode_ui.passcode_window.element:
+        print("Passcode window closed")
+        questions.passcode_ui = Passcode_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT, questions.anagram)
+      popup_open = False
+
+    if event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED:
+      if event.ui_element == questions.passcode_ui.passcode_entrybox.element:
+        print("Entered text:", event.text)
+        if event.text.upper() == questions.anagram.anagram:
+          print("correct")
+          questions.anagram_correct()
+          map_instance.final_map()
+          popup_open = False
 
     popup.manager.process_events(event)
   popup.manager.update(time_delta)

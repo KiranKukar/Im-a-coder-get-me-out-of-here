@@ -94,7 +94,7 @@ class TileMap():
           elif tile == '162':
             self.laptop_group.add(tile_item)
             self.laptop6.add(tile_item)
-          elif tile == '148':
+          elif tile in ['144', '148', '165']:
             self.exit_door.add(tile_item)
           elif tile in ['183', '184', '185', '186']:
             print('Walking on rubble')

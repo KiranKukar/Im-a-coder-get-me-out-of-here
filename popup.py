@@ -42,12 +42,19 @@ class Anagram_Textbox():
                         relative_rect=pygame.Rect(206, 20, 258, 30),
                         html_text=f'<b>{html_text}</b>',
                         manager=manager) 
+                  
+  def fade_in(self):
+    self.element.set_active_effect(pygame_gui.TEXT_EFFECT_FADE_IN)
 
-class Passcode_Textbox():
-  def __init__(self, manager):
+  def text_effect_typing_appear(self):
+    self.element.set_active_effect(pygame_gui.TEXT_EFFECT_TYPING_APPEAR, params = {'time_per_letter': .02})
+
+class Passcode_Entrybox():
+  def __init__(self, manager, container):
     self.element = pygame_gui.elements.UITextEntryLine(
-                        relative_rect=pygame.Rect(298, 135, 70, 40),
-                        manager=manager)
+                        relative_rect=pygame.Rect(25, 25, 315, 50),
+                        manager=manager,
+                        container=container)
 
 class Question_ui():
   def __init__(self, manager, win_width, win_height):
@@ -165,10 +172,37 @@ class Question_ui():
     self.write_buttons()
     self.write_question()
 
-   
+class Passcode_ui():
+  def __init__(self, manager, win_width, win_height, anagram):
+    self.manager = manager
+    self.win_width = win_width
+    self.win_height = win_height
+    self.anagram = anagram
 
-  
+    self.create_all()
+    self.hide_all()
+
+  def create_passcode_window(self):
+    ui_window_percentage_size = 0.60
+    ui_window_padding = self.win_width * (1 - ui_window_percentage_size)
+    display_title = "Can you solve the anagram?"
+
+    self.passcode_window = Window(ui_window_padding/2, ui_window_padding/2, self.win_width - ui_window_padding, 160, display_title, self.manager)
     
+  def create_passcode_entrybox(self):
+    self.passcode_entrybox = Passcode_Entrybox(self.manager, self.passcode_window.element)
+
+  def create_all(self):
+    self.create_passcode_window()
+    self.create_passcode_entrybox()
+
+  def hide_all(self):
+    self.passcode_window.element.hide()
+    self.passcode_entrybox.element.hide()
+  
+  def show_all(self):
+    self.passcode_window.element.show()
+    self.passcode_entrybox.element.show()
    
 
 
