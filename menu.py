@@ -1,110 +1,127 @@
-# Setup Python 
-from socket import EAI_SYSTEM
-from tkinter import Button
 import pygame, sys
- 
-# Setup pygame/window 
-mainClock = pygame.time.Clock()
-from pygame.locals import *
+import button
+import textwrap
+# import main 
+
 pygame.init()
-pygame.display.set_caption('Menu feature')
-screen = pygame.display.set_mode((672, 672),0,32)
-pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
- 
-font = pygame.font.SysFont('consolas', 60)
-smallText = pygame.font.SysFont('Verdana', 35)
- 
-def draw_text(text, font, colour, surface, x, y):
-    textobj = font.render(text, 1, colour) 
-    textrect = textobj.get_rect()
-    textrect.topleft = (x, y)
-    surface.blit(textobj, textrect)
 
-#Adding a click variable
-click = False
- 
-def main_menu():
-    while True:
- 
-        screen.fill((0,0,0))
-        draw_text('main menu', font, (255, 255, 255), screen, 80, 50)
- 
-        mx, my = pygame.mouse.get_pos()
+SCALE = 2
+BG = (185, 237, 214)
+win = pygame.display.set_mode((336 * SCALE, 336 * SCALE))
 
-        button_1 = pygame.Rect(175, 200, 372, 75)
-        button_2 = pygame.Rect(175, 300, 372, 75)
-        button_3 = pygame.Rect(175, 400, 372, 75)
+#loads Main Menu button images
+start_img = pygame.image.load('img/button-imgs/New Game.png').convert_alpha()
+exit_img = pygame.image.load('img/button-imgs/Exit.png').convert_alpha()
+about_img = pygame.image.load('img/button-imgs/About.png').convert_alpha()
+credits_img = pygame.image.load('img/button-imgs/Credits.png').convert_alpha()
 
-        if button_1.collidepoint((mx, my)):
-            if click:
-                game_easy()
-        if button_2.collidepoint((mx, my)):
-            if click:
-                game_hard()
-        if button_3.collidepoint((mx, my)):
-            if click:
-                how_to_play()
+#Creates Main Menu button instances
+start_button = button.Button(100, 200, start_img, 0.8)
+exit_button = button.Button(450, 200, exit_img, 0.8)
+about_button = button.Button(100, 400, about_img, 0.8)
+credits_button = button.Button(450, 400, credits_img, 0.8)
+
+font = pygame.font.SysFont('consolas', 20)
+# smallText = pygame.font.SysFont('consolas', 10)
+
+story_text = "Hello Agent! Last night while out for drinks with your collegues at MI5 you overheard your coworker planning to bring down MI5 by scrambling the code in their firewalls. That’s the last thing you rememeber. You’ve woken up with a massive headache in the server room. The doors are locked and they’ve already sabotaged the code. They must have left you here to frame you. Can you fix the code to foil their plans and break your way out!"
+
+# first_stage_story = story_text.splitlines()
+first_stage_story = textwrap.wrap(story_text)
+
+clock = pygame.time.Clock()
+
+class Menu():
+    def __init__(self):
+        self.main_menu()
+
+    def draw_header(self, text, font, colour, surface, x, y):
+        textobj = font.render(text, 1, colour) 
+        textrect = textobj.get_rect()
+        textrect.topleft = (x, y)
+        textrect.center = (x // 2, y // 2)
+        surface.blit(textobj, textrect)
+
+    # def draw_text(text, smallText, colour, surface, x, y):
+    #     textobj = smallText.render(text, 1, colour) 
+    #     textrect = textobj.get_rect()
+    #     textrect.center = (x // 2, y // 2)
+    #     surface.blit(textobj, textrect)
 
 
-        pygame.draw.rect(screen, (255, 0, 0), button_1)
-        pygame.draw.rect(screen, (255, 0, 0), button_2)
-        pygame.draw.rect(screen, (255, 0, 0), button_3)
-        draw_text('Easy Mode', smallText, (255, 255, 255), screen, 265, 215)
-        draw_text('Hard Mode', smallText, (255, 255, 255), screen, 265, 315)
-        draw_text('How to Play', smallText, (255, 255, 255), screen, 255, 415)
-        
-        #Resets click to false after every frame. 
-        click = False
-        for event in pygame.event.get():
-            if event.type == QUIT:
+    def main_menu(self):
+        while True:
+            # import main
+            win.fill((0,0,0))
+            self.draw_header('main menu', font, (255, 255, 255), win, 20, 20)
+
+            if start_button.draw(win):
+                print('Start')
+                self.first_screen()
+            if exit_button.draw(win):
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
+            if about_button.draw(win):
+                print('About')
+            if credits_button.draw(win):
+                print ('Credits')
+    
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
- 
-        pygame.display.update()
-        mainClock.tick(60)
- 
-def game_easy():
-  exec(open("main.py").read())
-  mode = 'easy'
-  return mode
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.quit()
+                        sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
+    
+            pygame.display.update()
+            # clock.tick(60)
 
-def game_hard():
-  mode = 'hard'
-  return mode
- 
-def how_to_play():
-    running = True
-    while running:
-        screen.fill((0,0,0))
- 
-        draw_text('how to play', font, (255,255, 255), screen, 80, 50)
-        draw_text('Movement:', smallText, (255, 0, 0), screen, 120, 200)
-        draw_text('Action:', smallText, (255, 0, 0), screen, 195, 250)
-        draw_text('Exit:', smallText, (255, 0, 0), screen, 240, 300)
-        draw_text('Arrow Keys', smallText, (255, 100, 0), screen, 330, 200)
-        draw_text('Space Bar', smallText, (255, 100, 0), screen, 330, 250)
-        draw_text('Esc Key', smallText, (255, 100, 0), screen, 330, 300)
+    def first_screen(self):
+        while True:
+            import main
+            win.fill((0,0,0))
+            self.draw_header('instructions:', font, (255, 255, 255), win, 20, 20)
+            # draw_text(story_text, smallText, (255, 255, 255), win, 20, 600)
 
-        draw_text('Answer the Questions', smallText, (0, 255, 0), screen, 135, 400)
-        draw_text('Solve the Riddle', smallText, (0, 255, 0), screen, 180, 450)
-        draw_text('Escape the Room', smallText, (0, 255, 0), screen, 175, 500)
+            mx, my = pygame.mouse.get_pos()
 
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    running = False
-        
-        pygame.display.update()
-        mainClock.tick(60)
- 
-main_menu()
+            if start_button.draw(win):
+                print('Start')
+                main.game()
+            if exit_button.draw(win):
+                self.main_menu()
+    
+            # button_1 = pygame.Rect(50, 100, 200, 50)
+            # textSurf, textRect = button_1("Start game!", smallText)
+            # textRect.center = ( (150+(100/2)), (450+(50/2)) )
+            # gameDisplay.blit(textSurf, textRect)
+
+            # button_2 = pygame.Rect(50, 200, 200, 50)
+            # #This is to select the box with your mouse.
+            # if button_1.collidepoint((mx, my)):
+            #     if click:
+            #         game()
+            # if button_2.collidepoint((mx, my)):
+            #     if click:
+            #         main_menu()
+            # pygame.draw.rect(win, (255, 0, 0), button_1)
+            # pygame.draw.rect(win, (255, 0, 0), button_2)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
+            
+            pygame.display.update()
+            clock.tick(60)

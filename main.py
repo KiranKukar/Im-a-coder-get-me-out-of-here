@@ -3,7 +3,7 @@ import pygame
 import spriteSheet
 import pygame_gui
 
-
+import menu
 from map import *
 from player import *
 from popup import *
@@ -21,9 +21,9 @@ win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("I'm a Coder, Get Me Out of Here!")
 
 #Game music
-music = pygame.mixer.music.load('./sounds/MissionImpossibleTheme.mp3')
-pygame.mixer.music.play(-1)
-pygame.mixer.music.set_volume(0.1)
+# music = pygame.mixer.music.load('./sounds/MissionImpossibleTheme.mp3')
+# pygame.mixer.music.play(-1)
+# pygame.mixer.music.set_volume(0.1)
 
 # question_sound = pygame.mixer.Sound('./sounds/mixkit-game-level-music-689.wav')
 # question_sound.play()   #add this after the action you want it to play
@@ -164,83 +164,85 @@ spy = Player(321, 550, 33, 34)
 canCollide = True
 blocked = ''
 
-run = True
-while run:
-  win.fill(BG)
-  map = map_instance.map
-  intro = True
+def game():
+    run = True
+    while run:
+        win.fill(BG)
+        map = map_instance.map
+        intro = True
 
-  # Timer for Popup Manager GUI
-  time_delta = clock.tick(60)/1000.0
+    # Timer for Popup Manager GUI
+        time_delta = clock.tick(60)/1000.0
 
-  # Event Processing Loop
-  for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
-    if event.type == pygame.QUIT:   #Checks if the red button in the corner of the window is clicked
-      run=False   #Ends the game loop
+    # Event Processing Loop
+    for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
+        if event.type == pygame.QUIT:   #Checks if the red button in the corner of the window is clicked
+            run=False   #Ends the game loop
 
-    if event.type == pygame_gui.UI_BUTTON_PRESSED:
-      for button in questions.answer_buttons:    
-        if event.ui_element == button:
-          print('button')
-          if button.text == questions.loaded_question_info.correct_answer:
-            questions.question_answered('correctly')
-            map_instance.change_map()
-          else:
-            questions.question_answered('incorrectly')
-            map_instance.change_map()
-          popup_open = False
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+            for button in questions.answer_buttons:    
+                if event.ui_element == button:
+                    print('button')
+            if button.text == questions.loaded_question_info.correct_answer:
+                questions.question_answered('correctly')
+                map_instance.change_map()
+            else:
+                questions.question_answered('incorrectly')
+                map_instance.change_map()
+            popup_open = False
 
-    if event.type == pygame_gui.UI_WINDOW_CLOSE:
-      if event.ui_element == questions.question_ui.ui_window.element:
-        print("Question window closed")
-        questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT)
+        if event.type == pygame_gui.UI_WINDOW_CLOSE:
+            if event.ui_element == questions.question_ui.ui_window.element:
+                print("Question window closed")
+            questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT)
 
-      if event.ui_element == questions.passcode_ui.passcode_window.element:
-        print("Passcode window closed")
-        questions.passcode_ui = Passcode_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT, questions.anagram, MODE)
-      popup_open = False
+        if event.ui_element == questions.passcode_ui.passcode_window.element:
+            print("Passcode window closed")
+            questions.passcode_ui = Passcode_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT, questions.anagram, MODE)
+        popup_open = False
 
-    if event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED:
-      if event.ui_element == questions.passcode_ui.passcode_entrybox.element:
-        print("Entered text:", event.text)
-        if event.text.upper() == questions.anagram.anagram:
-          print("correct")
-          questions.anagram_correct()
-          map_instance.final_map()
-          popup_open = False
+        if event.type == pygame_gui.UI_TEXT_ENTRY_CHANGED:
+            if event.ui_element == questions.passcode_ui.passcode_entrybox.element:
+                print("Entered text:", event.text)
+            if event.text.upper() == questions.anagram.anagram:
+                print("correct")
+            questions.anagram_correct()
+            map_instance.final_map()
+            popup_open = False
 
-    popup.manager.process_events(event)
-  popup.manager.update(time_delta)
-  
+        popup.manager.process_events(event)
+    popup.manager.update(time_delta)
+    
 
-  keys = pygame.key.get_pressed()
-  #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
-  if keys[pygame.K_ESCAPE]:
-    break
+    keys = pygame.key.get_pressed()
+    #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
+    # if keys[pygame.K_ESCAPE]:
+    #     # break
 
-  update(spy, keys)
+    update(spy, keys)
 
-  if not(spy.isJump):
-        if keys[pygame.K_SPACE]:
-            spy.isJump = True
-            spy.right = False
-            spy.left = False
-            spy.walkCount = 0
-            if intro:
-              intro = False
-              questions.intro_ui.hide_all()
-              popup_open = False
-  else:
-        if spy.jumpCount >= -5:
-            neg = 1
-            if spy.jumpCount < 0:
-                neg = -1
-            spy.y -= (spy.jumpCount ** 2) * 0.5 * neg
-            spy.jumpCount -= 1
-        else:
-            spy.isJump = False
-            spy.jumpCount = 5
-            
-  redrawGameWindow()
+    if not(spy.isJump):
+            if keys[pygame.K_SPACE]:
+                spy.isJump = True
+                spy.right = False
+                spy.left = False
+                spy.walkCount = 0
+                if intro:
+                    intro = False
+                questions.intro_ui.hide_all()
+                popup_open = False
+    else:
+            if spy.jumpCount >= -5:
+                neg = 1
+                if spy.jumpCount < 0:
+                    neg = -1
+                spy.y -= (spy.jumpCount ** 2) * 0.5 * neg
+                spy.jumpCount -= 1
+            else:
+                spy.isJump = False
+                spy.jumpCount = 5
+                
+    redrawGameWindow()
 
 pygame.quit()   #If we exit the loop this will execute and close our game
+menu
