@@ -37,13 +37,17 @@ class Textbox():
     self.element.set_active_effect(pygame_gui.TEXT_EFFECT_TYPING_APPEAR, params = {'time_per_letter': .01})
 
 class Anagram_Textbox():
-  def __init__(self, manager):
+  def __init__(self, manager, html_text):
     self.element = pygame_gui.elements.UITextBox(
-                        relative_rect=pygame.Rect(256, 20, 158, 30),
-                        html_text='<b> P  _  T  _  O  N</b>',
+                        relative_rect=pygame.Rect(206, 20, 258, 30),
+                        html_text=f'<b>{html_text}</b>',
                         manager=manager) 
 
-    # pygame_gui.core.TextBoxLayout.horiz_center_all_rows
+class Passcode_Textbox():
+  def __init__(self, manager):
+    self.element = pygame_gui.elements.UITextEntryLine(
+                        relative_rect=pygame.Rect(298, 135, 70, 40),
+                        manager=manager)
 
 class Question_ui():
   def __init__(self, manager, win_width, win_height):
@@ -68,7 +72,6 @@ class Question_ui():
   
   def create_textbox(self):
     self.question_textbox = Textbox(50, 40, 375, 150, "Question Placeholder", self.manager, self.ui_window.element)
-    self.question_textbox.text_effect_typing_appear()
 
   def show_question_textbox(self):
     self.question_textbox.element.show()
@@ -110,20 +113,28 @@ class Question_ui():
 
   def load_question(self, question_info):
     self.question_info = question_info
+    self.question_textbox.text_effect_typing_appear()
 
     self.write_all()
     self.show_all()
 
+    if question_info.answered == 'no':
+      self.enable_all()
+      print('enabling all')
+    else:
+      self.disable_all()
+      print('disabling all')
+
   def answered_correctly(self):
     self.disable_all()
-    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><i>Correct!</i>')
+    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FFFFFF><i>Correct!</font></i>')
     self.question_info.answered = "Correctly"
     self.rewrite_question()
 
   def answered_incorrectly(self):
     self.disable_all()
-    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FF0000><i>Wrong!</i>')
-    self.question_info.answered = "Correctly"
+    self.question_info.question = (f'<font color=#03A062><b>{self.question_info.question}</font></b><br><br><font color=#FF0000><i>Wrong!</font></i>')
+    self.question_info.answered = "Incorrectly"
     self.rewrite_question()
 
   def disable_all(self):

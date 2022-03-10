@@ -4,16 +4,14 @@ import spriteSheet
 import pygame_gui
 import time
 
-from tiles import *
+
+from map import *
 from player import *
 from popup import *
 from question_info import *
 from question import *
 
 pygame.init()
-
-
-
 
 SCALE = 2
 WIN_WIDTH = 336 * SCALE
@@ -31,94 +29,113 @@ popup_open = False
 sprite_sheet_image = pygame.image.load('dungeon_sheet.png').convert_alpha()
 sprite_sheet = spriteSheet.SpriteSheet(sprite_sheet_image)
 
-map = TileMap('map21x21.csv', sprite_sheet, SCALE)
+map_instance = Map(sprite_sheet, SCALE)
 
+# def define_map():
+#   map = map_instance.map
+# return map
 
+# define_map()
 
-clock = pygame.time.Clock()   #Used to manage how fast the screen updates
+# Clock to manage how fast the screen updates
+clock = pygame.time.Clock()   
 
-# Timer for Popup Manager GUI
-time_delta = clock.tick(60)/1000.0
-
-
-
-
+# Collision functions
 def laptopCollision():
   if pygame.sprite.spritecollideany(spy, map.laptop1):
     print('laptop 1 collision')
-    # set up a question
+    questions.load_question(questions.q1.question_info)
+    if questions.q1.question_info.answered == "no":
+      popup_open = True
   if pygame.sprite.spritecollideany(spy, map.laptop2):
     print('laptop 2 collision')
-    # set up a question
+    questions.load_question(questions.q2.question_info)
+    if questions.q2.question_info.answered == "no":
+      popup_open = True
   if pygame.sprite.spritecollideany(spy, map.laptop3):
     print('laptop 3 collision')
-    # set up a question
+    questions.load_question(questions.q3.question_info)
+    if questions.q3.question_info.answered == "no":
+      popup_open = True
   if pygame.sprite.spritecollideany(spy, map.laptop4):
     print('laptop 4 collision')
-    # set up a question
+    questions.load_question(questions.q4.question_info)
+    if questions.q4.question_info.answered == "no":
+      popup_open = True
   if pygame.sprite.spritecollideany(spy, map.laptop5):
     print('laptop 5 collision')
-    # set up a question
+    questions.load_question(questions.q5.question_info)
+    if questions.q5.question_info.answered == "no":
+      popup_open = True
   if pygame.sprite.spritecollideany(spy, map.laptop6):
     print('laptop 6 collision')
-    # set up a question
+    questions.load_question(questions.q6.question_info)
+    if questions.q6.question_info.answered == "no":
+      popup_open = True
 
+# Keys (with collision block)
 def update(spy, keys):
   global canCollide, blocked
-  if pygame.sprite.spritecollideany(spy, map.laptop_group) and keys[pygame.K_a]:
+  if pygame.sprite.spritecollideany(spy, map.laptop_group) and keys[pygame.K_SPACE] and popup_open == False:
     laptopCollision()
   else:
     if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
-        if keys[pygame.K_UP] and spy.rect.y < 620:
+        if keys[pygame.K_UP] and spy.rect.y < 620 and popup_open == False:
             blocked = 'up'
             spy.rect.move_ip(0, spy.vel+5)
-        if keys[pygame.K_DOWN] and spy.rect.y > 50:
+            questions.question_ui.hide_all()
+        if keys[pygame.K_DOWN] and spy.rect.y > 50 and popup_open == False:
             blocked = 'down'
             spy.rect.move_ip(0, -spy.vel-5)
-        if keys[pygame.K_LEFT] and spy.rect.x < 620:
+            questions.question_ui.hide_all()
+        if keys[pygame.K_LEFT] and spy.rect.x < 620 and popup_open == False:
             blocked = 'left'
             spy.rect.move_ip(spy.vel+5, 0)
-        if keys[pygame.K_RIGHT] and spy.rect.x > 30:
+            questions.question_ui.hide_all()
+        if keys[pygame.K_RIGHT] and spy.rect.x > 30 and popup_open == False:
             blocked = 'right'
             spy.rect.move_ip(-spy.vel-5, 0)
+            questions.question_ui.hide_all()
         canCollide = False
     else:
         canCollide = True
-        if keys[pygame.K_LEFT] and not blocked == 'left' and spy.rect.x > 30: 
+        if keys[pygame.K_LEFT] and not blocked == 'left' and spy.rect.x > 30 and popup_open == False: 
                 spy.rect.move_ip(-spy.vel, 0)
                 spy.left = True
                 spy.right = False
-        elif keys[pygame.K_RIGHT] and not blocked == 'right' and spy.rect.x < 620:
+                questions.question_ui.hide_all()
+        elif keys[pygame.K_RIGHT] and not blocked == 'right' and spy.rect.x < 620 and popup_open == False:
                 spy.rect.move_ip(spy.vel, 0)
                 spy.right = True
                 spy.left = False
-        elif keys[pygame.K_UP] and not blocked == 'up' and spy.rect.y > 50:
+                questions.question_ui.hide_all()
+        elif keys[pygame.K_UP] and not blocked == 'up' and spy.rect.y > 50 and popup_open == False:
                 spy.rect.move_ip(0, -spy.vel)
                 spy.right = True
                 spy.left = False
-        elif keys[pygame.K_DOWN] and not blocked == 'down' and spy.rect.y < 620:
+                questions.question_ui.hide_all()
+        elif keys[pygame.K_DOWN] and not blocked == 'down' and spy.rect.y < 620 and popup_open == False:
                 spy.rect.move_ip(0, spy.vel)
                 spy.right = True
                 spy.left = False
+                questions.question_ui.hide_all()
         else:
                 spy.right = False
                 spy.left = False
                 # spy.walkCount = 0
         blocked = ''
-    
-  print(spy.rect.x, 'x')
-  print(spy.rect.y, 'y')
+
 def redrawGameWindow():
+
+    # Draws map / spy / popups
     map.draw_map(win)
     spy.draw(win)
     popup.manager.draw_ui(win)
     
-    
     pygame.display.update()
 
-
 #mainloop
-spy = Player(250, 350, 33, 34)
+spy = Player(321, 550, 33, 34)
 
 canCollide = True
 blocked = ''
@@ -126,78 +143,43 @@ blocked = ''
 run = True
 while run:
   win.fill(BG)
-  # clock.tick(27)
+  map = map_instance.map
 
-#EVENT PROCESSING LOOP
+  # Timer for Popup Manager GUI
+  time_delta = clock.tick(60)/1000.0
+
+  # Event Processing Loop
   for event in pygame.event.get():   #This event processing loop will loop through a list of any keyboard or mouse events.
     if event.type == pygame.QUIT:   #Checks if the red button in the corner of the window is clicked
       run=False   #Ends the game loop
 
-    # if event.type == questions.question_textbox.
-    #   questions.question_textbox.hide()
-
     if event.type == pygame_gui.UI_BUTTON_PRESSED:
       for button in questions.answer_buttons:    
         if event.ui_element == button:
+          print('button')
           if button.text == questions.loaded_question_info.correct_answer:
             questions.question_answered('correctly')
+            map_instance.change_map()
           else:
             questions.question_answered('incorrectly')
+            map_instance.change_map()
           popup_open = False
 
-  popup.manager.process_events(event)
+    if event.type == pygame_gui.UI_WINDOW_CLOSE:
+      if event.ui_element == questions.question_ui.ui_window.element:
+        print("Window closed")
+        questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT)
+
+    popup.manager.process_events(event)
   popup.manager.update(time_delta)
   
 
-  keys = pygame.key.get_pressed()   #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
-  
+  keys = pygame.key.get_pressed()
+  #This will give us a dictonary where each key has a value of 1 or 0. Where 1 is pressed and 0 is not pressed.
+  if keys[pygame.K_ESCAPE]:
+    break
+
   update(spy, keys)
-
-#   if keys[pygame.K_LEFT] and popup_open == False:   #vel changes speed of movement
-#         spy.x -= spy.vel
-#         spy.left = True
-#         spy.right = False
-#         questions.question_ui.hide_all()
-#   elif keys[pygame.K_RIGHT] and popup_open == False:
-#         #character not allowed to move off right of screen
-#         #1240 is the width limit - can change it based on size of window so sprite is limited to the boundaries of the window
-#         #width is the width of the character
-#         #the position of the character will not be allowed to move past the border now set the width of the character from the edge
-#         spy.x += spy.vel
-#         spy.right = True
-#         spy.left = False
-#         questions.question_ui.hide_all()
-#   elif keys[pygame.K_UP] and popup_open == False:
-#         spy.y -= spy.vel
-#         spy.right = True
-#         spy.left = False
-#         questions.question_ui.hide_all()
-#   elif keys[pygame.K_DOWN] and popup_open == False:   #700 is the height limit - can change it based on size of window so sprite is limited to the boundaries of the window
-#         spy.y += spy.vel
-#         spy.right = True
-#         spy.left = False
-#         questions.question_ui.hide_all()
-#   elif keys[pygame.K_a]:
-#         print('pressed a')
-#   elif keys[pygame.K_b]:
-#         print('pressed b')
-
-#   elif keys[pygame.K_1]:
-#     questions.load_question(questions.q1.question_info)
-#     if questions.q1.question_info.answered == "no":
-#       popup_open = True
-    
-#   elif keys[pygame.K_2]:
-#     questions.question_ui.hide_all()
-#     popup_open = False
-
-#   elif keys[pygame.K_ESCAPE]:
-#         break
-#   else:
-#         spy.right = False
-#         spy.left = False
-
-  
 
   if not(spy.isJump):
         if keys[pygame.K_SPACE]:

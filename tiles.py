@@ -22,6 +22,7 @@ class Tile(pygame.sprite.Sprite):
 
 class TileMap():
   def __init__(self, filename, sprite_sheet, scale):
+    self.filename = filename
     self.tile_size = 16
     self.scale = scale
     self.sprite_sheet = sprite_sheet
@@ -95,6 +96,8 @@ class TileMap():
             self.laptop6.add(tile_item)
           elif tile == '148':
             self.exit_door.add(tile_item)
+          elif tile in ['183', '184', '185', '186']:
+            print('Walking on rubble')
           else:
             self.tile_group.add(tile_item)
         # Move to next tile in current row

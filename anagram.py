@@ -25,5 +25,7 @@ class Anagram():
 
     def add_letter(self):
       letter = self.mixed_letters.pop(0)
-      print(letter)
       self.letters.append(letter)
+
+    def add_qmark(self):
+      self.letters.append('?')
