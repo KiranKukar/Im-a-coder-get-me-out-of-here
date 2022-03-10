@@ -2,6 +2,7 @@ from tkinter import TRUE
 import pygame
 import spriteSheet
 import pygame_gui
+import pygame.mixer
 
 
 from map import *
@@ -27,7 +28,10 @@ pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.05)
 
 # Game sounds
-question_sound = pygame.mixer.Sound('./sounds/mixkit-game-level-music-689.wav')
+question_sound = pygame.mixer.Sound('./Sounds/MGSalertsound.mp3')
+endgame_sound = pygame.mixer.Sound('./Sounds/endgamemusic.mp3')
+walk_sound = pygame.mixer.Sound('./Sounds/cute-walk.wav')
+
 # pygame.mixer.Sound.set_volume(0.1)
 # question_sound.play()   #add this after the action you want it to play
 
@@ -89,6 +93,8 @@ def exitdoorCollision():
     if map_instance.end == True:
       run = False
       print('1')
+      pygame.mixer.music.stop()
+      endgame_sound.play()
     else:
       questions.load_passcode()
       popup_open = True
@@ -105,18 +111,22 @@ def update(spy, keys):
   else:
     if pygame.sprite.spritecollideany(spy, map.tile_group) and canCollide:
         if keys[pygame.K_UP] and spy.rect.y < 620 and popup_open == False:
+            walk_sound.play()
             blocked = 'up'
             spy.rect.move_ip(0, spy.vel+5)
             questions.kill_and_recreate_question()
         if keys[pygame.K_DOWN] and spy.rect.y > 50 and popup_open == False:
+            walk_sound.play()
             blocked = 'down'
             spy.rect.move_ip(0, -spy.vel-5)
             questions.kill_and_recreate_question()
         if keys[pygame.K_LEFT] and spy.rect.x < 620 and popup_open == False:
+            walk_sound.play()
             blocked = 'left'
             spy.rect.move_ip(spy.vel+5, 0)
             questions.kill_and_recreate_question()
         if keys[pygame.K_RIGHT] and spy.rect.x > 30 and popup_open == False:
+            walk_sound.play()
             blocked = 'right'
             spy.rect.move_ip(-spy.vel-5, 0)
             questions.kill_and_recreate_question()
@@ -196,7 +206,7 @@ while run:
     if event.type == pygame_gui.UI_WINDOW_CLOSE:
       if event.ui_element == questions.question_ui.ui_window.element:
         print("Question window closed")
-        questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT, questions)
+        questions.question_ui = Question_ui(popup.manager, WIN_WIDTH, WIN_HEIGHT)
 
       if event.ui_element == questions.passcode_ui.passcode_window.element:
         print("Passcode window closed")

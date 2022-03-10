@@ -1,7 +1,10 @@
 import pygame
 import pygame_gui
 import random
+import pygame.mixer
 
+pygame.mixer.init()
+question_sound = pygame.mixer.Sound('./Sounds/MGSalertsound.mp3')
 class Popup():
     def __init__(self, win_width, win_height):
       self.manager = pygame_gui.UIManager((win_width, win_height)) 
@@ -14,9 +17,9 @@ class Popup():
 class Window():
   def __init__(self, left_padding, top_padding, width, height, display_title, manager):
       self.element = pygame_gui.elements.UIWindow(
-                       rect=pygame.Rect(left_padding, top_padding, width, height),
-                       window_display_title=f'{display_title}',
-                       manager=manager)
+      rect=pygame.Rect(left_padding, top_padding, width, height),
+      window_display_title=f'{display_title}',
+      manager=manager)
 
 class Button():
   def __init__(self, left_padding, top_padding, width, height, text, manager, container):
@@ -73,8 +76,7 @@ class Question_ui():
                     "esther-PC HOME (win11)",
                     "haydn-mac personal - @macbook pro",
                     "kiran-mac(main) @home-air",
-                    "saad-win95 PC-Desktop",
-                   ]
+                    "saad-win95 PC-Desktop",]
     display_title = random.choice(laptop_names)
 
     ui_window_percentage_size = 0.75
@@ -131,6 +133,8 @@ class Question_ui():
   def load_question(self, question_info):
     self.question_info = question_info
     self.question_textbox.text_effect_typing_appear()
+    question_sound.play()
+
 
     self.write_all()
     self.show_all()
