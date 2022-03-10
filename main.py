@@ -107,19 +107,19 @@ def update(spy, keys):
         if keys[pygame.K_UP] and spy.rect.y < 620 and popup_open == False:
             blocked = 'up'
             spy.rect.move_ip(0, spy.vel+5)
-            questions.question_ui.hide_all()
+            questions.kill_and_recreate_question()
         if keys[pygame.K_DOWN] and spy.rect.y > 50 and popup_open == False:
             blocked = 'down'
             spy.rect.move_ip(0, -spy.vel-5)
-            questions.question_ui.hide_all()
+            questions.kill_and_recreate_question()
         if keys[pygame.K_LEFT] and spy.rect.x < 620 and popup_open == False:
             blocked = 'left'
             spy.rect.move_ip(spy.vel+5, 0)
-            questions.question_ui.hide_all()
+            questions.kill_and_recreate_question()
         if keys[pygame.K_RIGHT] and spy.rect.x > 30 and popup_open == False:
             blocked = 'right'
             spy.rect.move_ip(-spy.vel-5, 0)
-            questions.question_ui.hide_all()
+            questions.kill_and_recreate_question()
         canCollide = False
     else:
         canCollide = True
@@ -127,22 +127,22 @@ def update(spy, keys):
                 spy.rect.move_ip(-spy.vel, 0)
                 spy.left = True
                 spy.right = False
-                questions.question_ui.hide_all()
+                questions.kill_and_recreate_question()
         elif keys[pygame.K_RIGHT] and not blocked == 'right' and spy.rect.x < 620 and popup_open == False:
                 spy.rect.move_ip(spy.vel, 0)
                 spy.right = True
                 spy.left = False
-                questions.question_ui.hide_all()
+                questions.kill_and_recreate_question()
         elif keys[pygame.K_UP] and not blocked == 'up' and spy.rect.y > 50 and popup_open == False:
                 spy.rect.move_ip(0, -spy.vel)
                 spy.right = True
                 spy.left = False
-                questions.question_ui.hide_all()
+                questions.kill_and_recreate_question()
         elif keys[pygame.K_DOWN] and not blocked == 'down' and spy.rect.y < 620 and popup_open == False:
                 spy.rect.move_ip(0, spy.vel)
                 spy.right = True
                 spy.left = False
-                questions.question_ui.hide_all()
+                questions.kill_and_recreate_question()
         else:
                 spy.right = False
                 spy.left = False

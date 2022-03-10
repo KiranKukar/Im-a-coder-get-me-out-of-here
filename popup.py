@@ -171,6 +171,14 @@ class Question_ui():
   def write_all(self):
     self.write_buttons()
     self.write_question()
+  
+  def kill_all(self):
+    self.ui_window.element.kill()
+    self.question_textbox.element.kill()
+    self.answer_button_1.element.kill()
+    self.answer_button_2.element.kill()
+    self.answer_button_3.element.kill()
+    self.answer_button_4.element.kill()
 
 class Passcode_ui():
   def __init__(self, manager, win_width, win_height, anagram, mode):

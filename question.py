@@ -80,6 +80,10 @@ class Questions():
       self.anagram.add_qmark()
       self.print_anagram()
 
+  def kill_and_recreate_question(self):
+      self.question_ui.kill_all()
+      self.question_ui = Question_ui(self.popup.manager, self.win_width, self.win_height)
+  
   def print_anagram(self):
       self.anagram_ui.element.set_text(f'<b><font color=#0be01d>{self.anagram.letters}</font></b>')
 
