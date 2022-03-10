@@ -1,3 +1,5 @@
+import random
+
 from popup import *
 from question_info import *
 from anagram import *
@@ -57,7 +59,7 @@ class Questions():
     self.answer_button_4 = self.question_ui.answer_button_4.element
 
     self.answer_buttons = [self.answer_button_1, self.answer_button_2, self.answer_button_3, self.answer_button_4]
-
+    
   def question_answered(self, status):
     if status == 'correctly':
       self.question_ui.answered_correctly()
