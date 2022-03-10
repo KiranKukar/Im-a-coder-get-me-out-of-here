@@ -3,7 +3,7 @@ import pygame
 import spriteSheet
 import pygame_gui
 
-import menu
+from menu import Menu
 from map import *
 from player import *
 from popup import *
@@ -164,7 +164,7 @@ spy = Player(321, 550, 33, 34)
 canCollide = True
 blocked = ''
 
-def game():
+def game(popup_open):
     run = True
     while run:
         win.fill(BG)
@@ -244,5 +244,6 @@ def game():
                 
     redrawGameWindow()
 
-pygame.quit()   #If we exit the loop this will execute and close our game
-menu
+    pygame.quit()   #If we exit the loop this will execute and close our game
+
+Menu()
