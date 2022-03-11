@@ -26,8 +26,10 @@ Exit VS Code
 Open anaconda navigator
 lauch VS Code from anaconda navigator
 CLI: conda update anaconda
-     conda activate myenv   (not sure if this is relevant)
+     conda activate myenv 
      conda env export --from-history -f environment.yml
+     
+basement sprite sheet images credit: cBuch http://blog-buch.rhcloud.com
 
 
 
