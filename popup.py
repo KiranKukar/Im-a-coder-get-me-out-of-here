@@ -133,12 +133,13 @@ class Question_ui():
 
   def load_question(self, question_info):
     self.question_info = question_info
-    self.question_textbox.text_effect_typing_appear()
+    
     question_sound.play()
 
 
     self.write_all()
     self.show_all()
+    self.question_textbox.text_effect_typing_appear()
 
     if question_info.answered == 'no':
       self.enable_all()
