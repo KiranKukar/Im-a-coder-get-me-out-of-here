@@ -7,7 +7,7 @@ As a team we were tasked with creating a game that offered a player, coding base
 * MI5 theme : Character wakes up after a heavy night out with their colleagues, only to find themselves locked in a basement — the escape is on! 
 
 
-##How to play the game: ##
+## How to play the game: ##
 - clone the repo to your machine
 - make sure you have python3 installed
 - make sure you have the dependencies installed: pygame, pygame_gui, tkinter
