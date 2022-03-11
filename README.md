@@ -1,4 +1,5 @@
-[Coding final project](https://user-images.githubusercontent.com/92406004/157897615-0164c530-252b-45fa-bb69-1b62fd6f2713.jpg)
+![Coding final project](https://user-images.githubusercontent.com/92406004/157898876-025b2e86-d9db-4fa7-9e22-917e356f5cde.jpg)
+
 
 
 As a team we were tasked with creating a game that offered a player, coding based questions with the purpose of creating a fun interactive educational programme. 
