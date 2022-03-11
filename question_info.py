@@ -33,7 +33,7 @@ class Question_setup():
       'incorrect_answers' : ['Next line', 'Railroad Ahead', 'Divide twice']
     }
     q3 = {
-      'question' : 'Using Python, what does the following code output:<br><br>fingers = 5<br># print(fingers)',
+      'question' : 'Using Python, what does the following code output:<br>fingers = 5<br># print(fingers)',
       'correct_answer' : 'Nothing',
       'incorrect_answers' : ['An error', '5', 'hand']
     }
@@ -43,7 +43,7 @@ class Question_setup():
       'incorrect_answers' : ['keeps code readable', 'can be used instead of a line break', 'all good code should look like a staircase']
     }
     q5 = {
-      'question' : "Using Python, what does the following code output:<br><br>names = ['tam', 'tim']<br>name = 'tom'<br>print(names.append(name))",
+      'question' : "Using Python, what does the following code output:<br>names = ['tam', 'tim']<br>name = 'tom'<br>print(names.append(name))",
       'correct_answer' : 'none',
       'incorrect_answers' : ['tom', "['tam', 'tim', 'tom']", "['tom', 'tam', 'tim']"]
     }
@@ -63,7 +63,7 @@ class Question_setup():
       'incorrect_answers' : ['.python', '.p', '.pn']
     }
     q9 = {
-      'question' : 'What will be the value of the following Python expression?<br><br><br>4 + 3 % 5',
+      'question' : 'What will be the value of the following Python expression?<br>4 + 3 % 5',
       'correct_answer' : '7',
       'incorrect_answers' : ['2', '4', '1']
     }
