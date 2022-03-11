@@ -68,7 +68,7 @@ class Question_setup():
       'incorrect_answers' : ['2', '4', '1']
     }
     q10 = {
-      'question' : 'Which keyword  is used for function in Python language?',
+      'question' : 'Which keyword is used for function in Python language?',
       'correct_answer' : 'Def',
       'incorrect_answers' : ['Define', 'define', 'Function']
     }
